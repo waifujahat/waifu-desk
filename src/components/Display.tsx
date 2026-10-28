@@ -1,12 +1,12 @@
-import { ArrowUpRight, AlertCircle, Inbox, LoaderCircle } from 'lucide-react'
-import type { ReactNode } from 'react'
-import { openTrusted } from '../lib/desktop'
+import { ArrowUpRight, AlertCircle, Inbox, LoaderCircle } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { openTrusted } from '../lib/desktop';
 
 interface HeaderProps {
-  title: string
-  description?: string
-  eyebrow?: string
-  actions?: ReactNode
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  actions?: ReactNode;
 }
 
 export function PageHeader({ title, description, eyebrow, actions }: HeaderProps) {
@@ -19,15 +19,15 @@ export function PageHeader({ title, description, eyebrow, actions }: HeaderProps
       </div>
       {actions && <div className="page-actions">{actions}</div>}
     </header>
-  )
+  );
 }
 
 interface MetricProps {
-  label: string
-  value: string
-  detail?: string
-  icon: ReactNode
-  tone?: 'purple' | 'teal' | 'orange' | 'blue'
+  label: string;
+  value: string;
+  detail?: string;
+  icon: ReactNode;
+  tone?: 'purple' | 'teal' | 'orange' | 'blue';
 }
 
 export function MetricCard({ label, value, detail, icon, tone = 'purple' }: MetricProps) {
@@ -40,17 +40,25 @@ export function MetricCard({ label, value, detail, icon, tone = 'purple' }: Metr
       <strong className="metric-value">{value}</strong>
       {detail && <span className="metric-detail">{detail}</span>}
     </article>
-  )
+  );
 }
 
-export function Empty({ title, detail, icon }: { title: string; detail?: string; icon?: ReactNode }) {
+export function Empty({
+  title,
+  detail,
+  icon,
+}: {
+  title: string;
+  detail?: string;
+  icon?: ReactNode;
+}) {
   return (
     <div className="empty-state">
       <div className="empty-icon">{icon || <Inbox size={20} />}</div>
       <strong>{title}</strong>
       {detail && <p>{detail}</p>}
     </div>
-  )
+  );
 }
 
 export function Alert({ children }: { children: ReactNode }) {
@@ -59,7 +67,7 @@ export function Alert({ children }: { children: ReactNode }) {
       <AlertCircle size={16} />
       <span>{children}</span>
     </div>
-  )
+  );
 }
 
 export function Loading({ text = 'Memuat…' }: { text?: string }) {
@@ -67,7 +75,7 @@ export function Loading({ text = 'Memuat…' }: { text?: string }) {
     <div className="loading-state">
       <LoaderCircle size={18} className="spinner" /> {text}
     </div>
-  )
+  );
 }
 
 export function ExternalLink({
@@ -75,14 +83,18 @@ export function ExternalLink({
   children,
   className = '',
 }: {
-  url: string
-  children: ReactNode
-  className?: string
+  url: string;
+  children: ReactNode;
+  className?: string;
 }) {
   return (
-    <button type="button" className={`external-link ${className}`} onClick={() => void openTrusted(url)}>
+    <button
+      type="button"
+      className={`external-link ${className}`}
+      onClick={() => void openTrusted(url)}
+    >
       {children}
       <ArrowUpRight size={14} />
     </button>
-  )
+  );
 }

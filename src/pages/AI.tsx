@@ -1,20 +1,20 @@
-import { BrainCircuit, Clock3, Layers, PanelTopOpen, RefreshCw, Zap } from 'lucide-react'
-import type { CodexSnapshot, ReportedRateLimit } from '../types'
-import { Bars, Ring } from '../components/Charts'
-import { UsageHeatmap } from '../features/codex/index'
-import { Panel } from '../design-system/components/Panel'
-import { Alert, MetricCard, PageHeader } from '../components/Display'
-import { DataState } from '../components/DataState'
-import { compact, dateTime, integer } from '../lib/format'
-import { toggleMini } from '../lib/desktop'
-import { Button } from '../design-system/components/Button'
+import { BrainCircuit, Clock3, Layers, PanelTopOpen, RefreshCw, Zap } from 'lucide-react';
+import type { CodexSnapshot, ReportedRateLimit } from '../types';
+import { Bars, Ring } from '../components/Charts';
+import { UsageHeatmap } from '../features/codex/index';
+import { Panel } from '../design-system/components/Panel';
+import { Alert, MetricCard, PageHeader } from '../components/Display';
+import { DataState } from '../components/DataState';
+import { compact, dateTime, integer } from '../lib/format';
+import { toggleMini } from '../lib/desktop';
+import { Button } from '../design-system/components/Button';
 
 interface AIProps {
-  snapshot: CodexSnapshot | null
-  desktop: boolean
-  loading: boolean
-  error: string | null
-  onRefresh: () => void
+  snapshot: CodexSnapshot | null;
+  desktop: boolean;
+  loading: boolean;
+  error: string | null;
+  onRefresh: () => void;
 }
 
 function LimitPanel({ item, title }: { item: ReportedRateLimit; title: string }) {
@@ -32,15 +32,15 @@ function LimitPanel({ item, title }: { item: ReportedRateLimit; title: string })
         </div>
       </div>
     </Panel>
-  )
+  );
 }
 
 export default function AI({ snapshot, desktop, loading, error, onRefresh }: AIProps) {
-  const connected = Boolean(snapshot?.connected)
-  const limits = snapshot?.limits ?? []
-  const primary = limits.find((item) => item.label === '5-hour window')
-  const weekly = limits.find((item) => item.label === 'Weekly window')
-  const breakdownTotal = (snapshot?.inputTokens ?? 0) + (snapshot?.outputTokens ?? 0)
+  const connected = Boolean(snapshot?.connected);
+  const limits = snapshot?.limits ?? [];
+  const primary = limits.find((item) => item.label === '5-hour window');
+  const weekly = limits.find((item) => item.label === 'Weekly window');
+  const breakdownTotal = (snapshot?.inputTokens ?? 0) + (snapshot?.outputTokens ?? 0);
 
   return (
     <>
@@ -64,9 +64,15 @@ export default function AI({ snapshot, desktop, loading, error, onRefresh }: AIP
         <Panel title="Data lokal">
           <DataState
             title={
-              loading ? 'Membaca sesi Codex…' : error ? 'Gagal membaca data Codex' : 'Belum ada data Codex'
+              loading
+                ? 'Membaca sesi Codex…'
+                : error
+                  ? 'Gagal membaca data Codex'
+                  : 'Belum ada data Codex'
             }
-            detail={error ?? (desktop ? 'Sesi lokal belum ditemukan.' : 'Buka melalui aplikasi desktop.')}
+            detail={
+              error ?? (desktop ? 'Sesi lokal belum ditemukan.' : 'Buka melalui aplikasi desktop.')
+            }
           />
         </Panel>
       ) : (
@@ -103,7 +109,9 @@ export default function AI({ snapshot, desktop, loading, error, onRefresh }: AIP
               {weekly && <LimitPanel item={weekly} title="Batas mingguan" />}
             </div>
           ) : (
-            <p className="small-note standalone-note">Batas pemakaian belum dilaporkan oleh sesi lokal.</p>
+            <p className="small-note standalone-note">
+              Batas pemakaian belum dilaporkan oleh sesi lokal.
+            </p>
           )}
 
           <div className="content-grid two-thirds">
@@ -192,15 +200,17 @@ export default function AI({ snapshot, desktop, loading, error, onRefresh }: AIP
                 </table>
               </div>
               <p className="wd-privacy-line">
-                Hanya statistik token dan nama folder proyek yang ditampilkan. Isi percakapan tidak dikirim.
+                Hanya statistik token dan nama folder proyek yang ditampilkan. Isi percakapan tidak
+                dikirim.
               </p>
             </Panel>
           ) : null}
           <p className="small-note standalone-note">
-            Data lokal · 30 hari terakhir. Kuota dari laporan terakhir, bukan real-time; biaya belum dihitung.
+            Data lokal · 30 hari terakhir. Kuota dari laporan terakhir, bukan real-time; biaya belum
+            dihitung.
           </p>
         </>
       )}
     </>
-  )
+  );
 }

@@ -1,26 +1,26 @@
-import { ArrowRight, FolderGit2 } from 'lucide-react'
-import type { CodexSnapshot, GitHubData, Page } from '../types'
-import { compact, dateTime, groupEventsByDay, relative } from '../lib/format'
-import { Chart } from '../components/Charts'
-import { DataState, GitHubNotice } from '../components/DataState'
-import { ExternalLink, PageHeader } from '../components/Display'
-import { Panel } from '../design-system/components/Panel'
-import { Button } from '../design-system/components/Button'
+import { ArrowRight, FolderGit2 } from 'lucide-react';
+import type { CodexSnapshot, GitHubData, Page } from '../types';
+import { compact, dateTime, groupEventsByDay, relative } from '../lib/format';
+import { Chart } from '../components/Charts';
+import { DataState, GitHubNotice } from '../components/DataState';
+import { ExternalLink, PageHeader } from '../components/Display';
+import { Panel } from '../design-system/components/Panel';
+import { Button } from '../design-system/components/Button';
 
 interface OverviewProps {
-  github: GitHubData
-  githubLoading: boolean
-  githubError: string | null
-  codex: CodexSnapshot | null
-  codexLoading: boolean
-  codexError: string | null
-  onRefreshGitHub: () => void
-  onPage: (page: Page) => void
-  desktop: boolean
+  github: GitHubData;
+  githubLoading: boolean;
+  githubError: string | null;
+  codex: CodexSnapshot | null;
+  codexLoading: boolean;
+  codexError: string | null;
+  onRefreshGitHub: () => void;
+  onPage: (page: Page) => void;
+  desktop: boolean;
 }
 
 function UsageBar({ label, used, reset }: { label: string; used: number; reset: string | null }) {
-  const percent = Math.max(0, Math.min(100, used))
+  const percent = Math.max(0, Math.min(100, used));
   return (
     <div className="wd-quota-line">
       <div className="wd-quota-head">
@@ -39,7 +39,7 @@ function UsageBar({ label, used, reset }: { label: string; used: number; reset: 
       </div>
       {reset && <small>Reset {dateTime(reset)}</small>}
     </div>
-  )
+  );
 }
 
 function CodexSummary({
@@ -49,16 +49,16 @@ function CodexSummary({
   desktop,
   onPage,
 }: {
-  codex: CodexSnapshot | null
-  loading: boolean
-  error: string | null
-  desktop: boolean
-  onPage: (page: Page) => void
+  codex: CodexSnapshot | null;
+  loading: boolean;
+  error: string | null;
+  desktop: boolean;
+  onPage: (page: Page) => void;
 }) {
-  const limits = codex?.limits ?? []
-  const hourly = limits.find((limit) => limit.label === '5-hour window')
-  const weekly = limits.find((limit) => limit.label === 'Weekly window')
-  const connected = Boolean(codex?.connected)
+  const limits = codex?.limits ?? [];
+  const hourly = limits.find((limit) => limit.label === '5-hour window');
+  const weekly = limits.find((limit) => limit.label === 'Weekly window');
+  const connected = Boolean(codex?.connected);
 
   return (
     <Panel
@@ -84,25 +84,40 @@ function CodexSummary({
           </div>
           {(hourly || weekly) && (
             <div className="wd-quotas">
-              {hourly && <UsageBar label="Kuota 5 jam" used={hourly.usedPercent} reset={hourly.resetsAt} />}
+              {hourly && (
+                <UsageBar label="Kuota 5 jam" used={hourly.usedPercent} reset={hourly.resetsAt} />
+              )}
               {weekly && (
-                <UsageBar label="Kuota mingguan" used={weekly.usedPercent} reset={weekly.resetsAt} />
+                <UsageBar
+                  label="Kuota mingguan"
+                  used={weekly.usedPercent}
+                  reset={weekly.resetsAt}
+                />
               )}
             </div>
           )}
           <p className="wd-source-note">
-            Laporan lokal{codex.lastSeenAt ? ` · ${dateTime(codex.lastSeenAt)}` : ''} · bukan real-time
+            Laporan lokal{codex.lastSeenAt ? ` · ${dateTime(codex.lastSeenAt)}` : ''} · bukan
+            real-time
             {error ? ' · pembaruan gagal' : ''}
           </p>
         </>
       ) : (
         <DataState
-          title={loading ? 'Membaca sesi Codex…' : error ? 'Data Codex gagal dimuat' : 'Belum ada data Codex'}
-          detail={error ?? (desktop ? 'Sesi lokal belum ditemukan.' : 'Buka melalui aplikasi desktop.')}
+          title={
+            loading
+              ? 'Membaca sesi Codex…'
+              : error
+                ? 'Data Codex gagal dimuat'
+                : 'Belum ada data Codex'
+          }
+          detail={
+            error ?? (desktop ? 'Sesi lokal belum ditemukan.' : 'Buka melalui aplikasi desktop.')
+          }
         />
       )}
     </Panel>
-  )
+  );
 }
 
 function GithubSummary({
@@ -112,15 +127,15 @@ function GithubSummary({
   onRetry,
   onPage,
 }: {
-  github: GitHubData
-  loading: boolean
-  error: string | null
-  onRetry: () => void
-  onPage: (page: Page) => void
+  github: GitHubData;
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
+  onPage: (page: Page) => void;
 }) {
-  const hasData = Boolean(github.profile || github.repos.length || github.events.length)
-  const stars = github.repos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
-  const visibleRepos = github.repos.slice(0, 3)
+  const hasData = Boolean(github.profile || github.repos.length || github.events.length);
+  const stars = github.repos.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+  const visibleRepos = github.repos.slice(0, 3);
 
   return (
     <Panel
@@ -174,7 +189,7 @@ function GithubSummary({
         <DataState title={loading ? 'Memuat GitHub…' : 'Belum ada data GitHub'} />
       ) : null}
     </Panel>
-  )
+  );
 }
 
 export default function Overview({
@@ -221,5 +236,5 @@ export default function Overview({
         </Panel>
       )}
     </div>
-  )
+  );
 }

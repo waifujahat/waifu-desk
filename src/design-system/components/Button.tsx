@@ -1,17 +1,17 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 /**
  * Shared action primitive. UI-only: navigation and side effects belong to callers.
  * All interactive variants preserve native button keyboard behavior.
  */
-type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'icon'
-type ButtonSize = 'sm' | 'md'
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'icon';
+type ButtonSize = 'sm' | 'md';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant
-  size?: ButtonSize
-  busy?: boolean
-  children: ReactNode
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  busy?: boolean;
+  children: ReactNode;
 }
 
 export function Button({
@@ -26,7 +26,7 @@ export function Button({
 }: ButtonProps) {
   const classes = ['wd-button', `wd-button--${variant}`, `wd-button--${size}`, className]
     .filter(Boolean)
-    .join(' ')
+    .join(' ');
 
   return (
     <button
@@ -38,5 +38,5 @@ export function Button({
     >
       {children}
     </button>
-  )
+  );
 }

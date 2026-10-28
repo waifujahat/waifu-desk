@@ -1,11 +1,11 @@
-import type { DailyUsage } from '../../../types'
-import { compact } from '../../../lib/format'
-import { heatmapLevel } from '../domain/codexAnalytics'
+import type { DailyUsage } from '../../../types';
+import { compact } from '../../../lib/format';
+import { heatmapLevel } from '../domain/codexAnalytics';
 
 /** Aggregate-only calendar; no prompts or session identifiers are displayed. */
 export function UsageHeatmap({ days }: { days: DailyUsage[] }) {
-  const maximum = Math.max(0, ...days.map((day) => day.tokens))
-  const total = days.reduce((sum, day) => sum + day.tokens, 0)
+  const maximum = Math.max(0, ...days.map((day) => day.tokens));
+  const total = days.reduce((sum, day) => sum + day.tokens, 0);
 
   return (
     <div
@@ -30,5 +30,5 @@ export function UsageHeatmap({ days }: { days: DailyUsage[] }) {
         <span>Tinggi</span>
       </div>
     </div>
-  )
+  );
 }

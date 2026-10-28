@@ -1,35 +1,35 @@
-import { GitCommitHorizontal } from 'lucide-react'
-import type { GitHubEvent } from '../types'
-import { Chart } from '../components/Charts'
-import { Panel } from '../design-system/components/Panel'
-import { ExternalLink, PageHeader } from '../components/Display'
-import { DataState, GitHubNotice } from '../components/DataState'
-import { hasGithubFailure } from '../features/github/index'
-import { groupEventsByDay, humanEvent, relative } from '../lib/format'
-import { Badge } from '../design-system/components/Badge'
+import { GitCommitHorizontal } from 'lucide-react';
+import type { GitHubEvent } from '../types';
+import { Chart } from '../components/Charts';
+import { Panel } from '../design-system/components/Panel';
+import { ExternalLink, PageHeader } from '../components/Display';
+import { DataState, GitHubNotice } from '../components/DataState';
+import { hasGithubFailure } from '../features/github/index';
+import { groupEventsByDay, humanEvent, relative } from '../lib/format';
+import { Badge } from '../design-system/components/Badge';
 
 interface ActivityProps {
-  events: GitHubEvent[]
-  loading: boolean
-  warnings: string[]
-  error: string | null
-  onRetry: () => void
+  events: GitHubEvent[];
+  loading: boolean;
+  warnings: string[];
+  error: string | null;
+  onRetry: () => void;
 }
 
 export default function Activity({ events, loading, warnings, error, onRetry }: ActivityProps) {
   const categories = Object.entries(
     events.reduce<Record<string, number>>((acc, event) => {
-      acc[event.type] = (acc[event.type] || 0) + 1
-      return acc
+      acc[event.type] = (acc[event.type] || 0) + 1;
+      return acc;
     }, {}),
-  ).sort((a, b) => b[1] - a[1])
+  ).sort((a, b) => b[1] - a[1]);
 
-  const failed = Boolean(error) || hasGithubFailure(warnings, 'Aktivitas')
+  const failed = Boolean(error) || hasGithubFailure(warnings, 'Aktivitas');
   const emptyTitle = loading
     ? 'Memuat aktivitas…'
     : failed
       ? 'Aktivitas belum dapat dimuat'
-      : 'Belum ada aktivitas'
+      : 'Belum ada aktivitas';
 
   return (
     <>
@@ -88,5 +88,5 @@ export default function Activity({ events, loading, warnings, error, onRetry }: 
         </>
       )}
     </>
-  )
+  );
 }

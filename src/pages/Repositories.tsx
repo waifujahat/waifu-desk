@@ -1,67 +1,80 @@
-import { Archive, ArrowUpRight, FolderGit2, GitFork, Search, Star, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import type { GitHubRepo } from '../types'
-import { ExternalLink, PageHeader } from '../components/Display'
-import { DataState, GitHubNotice } from '../components/DataState'
-import { hasGithubFailure } from '../features/github/index'
-import { compact, relative } from '../lib/format'
-import { openTrusted } from '../lib/desktop'
-import { Badge } from '../design-system/components/Badge'
-import { Button } from '../design-system/components/Button'
-import { LocalGitPanel } from '../features/local-git'
+import { Archive, ArrowUpRight, FolderGit2, GitFork, Search, Star, X } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import type { GitHubRepo } from '../types';
+import { ExternalLink, PageHeader } from '../components/Display';
+import { DataState, GitHubNotice } from '../components/DataState';
+import { hasGithubFailure } from '../features/github/index';
+import { compact, relative } from '../lib/format';
+import { openTrusted } from '../lib/desktop';
+import { Badge } from '../design-system/components/Badge';
+import { Button } from '../design-system/components/Button';
+import { LocalGitPanel } from '../features/local-git';
 
-type Sort = 'recent' | 'name' | 'stars' | 'forks'
+type Sort = 'recent' | 'name' | 'stars' | 'forks';
 
 interface RepositoriesProps {
-  repos: GitHubRepo[]
-  loading: boolean
-  warnings: string[]
-  error: string | null
-  onRetry: () => void
+  repos: GitHubRepo[];
+  loading: boolean;
+  warnings: string[];
+  error: string | null;
+  onRetry: () => void;
 }
 
-export default function Repositories({ repos, loading, warnings, error, onRetry }: RepositoriesProps) {
-  const [query, setQuery] = useState('')
-  const [language, setLanguage] = useState('all')
-  const [sort, setSort] = useState<Sort>('recent')
+export default function Repositories({
+  repos,
+  loading,
+  warnings,
+  error,
+  onRetry,
+}: RepositoriesProps) {
+  const [query, setQuery] = useState('');
+  const [language, setLanguage] = useState('all');
+  const [sort, setSort] = useState<Sort>('recent');
 
   const languages = useMemo(
     () =>
-      [...new Set(repos.map((repo) => repo.language).filter((item): item is string => Boolean(item)))].sort(),
+      [
+        ...new Set(
+          repos.map((repo) => repo.language).filter((item): item is string => Boolean(item)),
+        ),
+      ].sort(),
     [repos],
-  )
+  );
 
   const filtered = useMemo(() => {
-    const term = query.trim().toLowerCase()
+    const term = query.trim().toLowerCase();
     const results = repos.filter((repo) => {
       const matchesText = `${repo.name} ${repo.description || ''} ${repo.language || ''}`
         .toLowerCase()
-        .includes(term)
-      return matchesText && (language === 'all' || repo.language === language)
-    })
+        .includes(term);
+      return matchesText && (language === 'all' || repo.language === language);
+    });
 
     return results.sort((a, b) => {
-      if (sort === 'name') return a.name.localeCompare(b.name)
-      if (sort === 'stars') return b.stargazers_count - a.stargazers_count
-      if (sort === 'forks') return b.forks_count - a.forks_count
-      return new Date(b.pushed_at || b.updated_at).getTime() - new Date(a.pushed_at || a.updated_at).getTime()
-    })
-  }, [repos, query, language, sort])
+      if (sort === 'name') return a.name.localeCompare(b.name);
+      if (sort === 'stars') return b.stargazers_count - a.stargazers_count;
+      if (sort === 'forks') return b.forks_count - a.forks_count;
+      return (
+        new Date(b.pushed_at || b.updated_at).getTime() -
+        new Date(a.pushed_at || a.updated_at).getTime()
+      );
+    });
+  }, [repos, query, language, sort]);
 
-  const activeFilters = Boolean(query || language !== 'all' || sort !== 'recent')
-  const failed = Boolean(error) || hasGithubFailure(warnings, 'Repositori')
+  const activeFilters = Boolean(query || language !== 'all' || sort !== 'recent');
+  const failed = Boolean(error) || hasGithubFailure(warnings, 'Repositori');
   const emptyTitle = loading
     ? 'Memuat repositori…'
     : failed
       ? 'Repositori belum dapat dimuat'
       : activeFilters
         ? 'Tidak ada hasil'
-        : 'Belum ada repository'
+        : 'Belum ada repository';
   const reset = () => {
-    setQuery('')
-    setLanguage('all')
-    setSort('recent')
-  }
+    setQuery('');
+    setLanguage('all');
+    setSort('recent');
+  };
 
   return (
     <>
@@ -173,5 +186,5 @@ export default function Repositories({ repos, loading, warnings, error, onRetry 
         </div>
       )}
     </>
-  )
+  );
 }

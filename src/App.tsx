@@ -1,43 +1,46 @@
-import { MascotHost } from './features/appearance/components/MascotHost'
-import { useMascot } from './features/appearance/hooks/useMascot'
-import { WallpaperLayer, useAppearance } from './features/appearance'
-import { readAnimePalette, type AnimePalette } from './design-system/animeTheme'
-import { useEffect, useState } from 'react'
-import { BrainCircuit, RefreshCw } from 'lucide-react'
-import type { Page, Theme } from './types'
-import { useGithub } from './features/github/index'
-import { useCodex } from './features/codex/index'
-import Sidebar from './components/Sidebar'
-import Topbar from './components/Topbar'
-import Overview from './pages/Overview'
-import AI from './pages/AI'
-import Repositories from './pages/Repositories'
-import Activity from './pages/Activity'
-import Settings from './pages/Settings'
-import { compact, dateTime } from './lib/format'
-import { desktopAvailable, toggleMini } from './lib/desktop'
-import { Ring } from './components/Charts'
+import { MascotHost } from './features/appearance/components/MascotHost';
+import { useMascot } from './features/appearance/hooks/useMascot';
+import { WallpaperLayer, useAppearance } from './features/appearance';
+import { readAnimePalette, type AnimePalette } from './design-system/animeTheme';
+import { useEffect, useState } from 'react';
+import { BrainCircuit, RefreshCw } from 'lucide-react';
+import type { Page, Theme } from './types';
+import { useGithub } from './features/github/index';
+import { useCodex } from './features/codex/index';
+import Sidebar from './components/Sidebar';
+import Topbar from './components/Topbar';
+import Overview from './pages/Overview';
+import AI from './pages/AI';
+import Repositories from './pages/Repositories';
+import Activity from './pages/Activity';
+import Settings from './pages/Settings';
+import { compact, dateTime } from './lib/format';
+import { desktopAvailable, toggleMini } from './lib/desktop';
+import { Ring } from './components/Charts';
 
-const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings']
-const isPage = (value: string): value is Page => PAGES.includes(value as Page)
+const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings'];
+const isPage = (value: string): value is Page => PAGES.includes(value as Page);
 
 function readPreference(key: string, fallback: string) {
   try {
-    return localStorage.getItem(key) || fallback
+    return localStorage.getItem(key) || fallback;
   } catch {
-    return fallback
+    return fallback;
   }
 }
 
 function MiniApp() {
-  const codex = useCodex()
-  const latest = codex.data?.limits.find((item) => item.label === '5-hour window')
-  const weekly = codex.data?.limits.find((item) => item.label === 'Weekly window')
+  const codex = useCodex();
+  const latest = codex.data?.limits.find((item) => item.label === '5-hour window');
+  const weekly = codex.data?.limits.find((item) => item.label === 'Weekly window');
 
   useEffect(() => {
-    document.documentElement.dataset.theme = readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark'
-    document.documentElement.dataset.palette = readAnimePalette(readPreference('wd-palette', 'classic'))
-  }, [])
+    document.documentElement.dataset.theme =
+      readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark';
+    document.documentElement.dataset.palette = readAnimePalette(
+      readPreference('wd-palette', 'classic'),
+    );
+  }, []);
 
   return (
     <div className="mini-app">
@@ -92,85 +95,85 @@ function MiniApp() {
         Tutup widget
       </button>
     </div>
-  )
+  );
 }
 
 function MainApp() {
   // Hana tetap aktif, hanya panel pengaturannya yang dihapus.
-  const { mascot, updateMascot } = useMascot()
-  const { wallpaper, updateWallpaper } = useAppearance()
+  const { mascot, updateMascot } = useMascot();
+  const { wallpaper, updateWallpaper } = useAppearance();
 
-  const [username, setUsername] = useState(() => readPreference('dc-username', 'waifujahat'))
+  const [username, setUsername] = useState(() => readPreference('dc-username', 'waifujahat'));
 
   const [theme, setTheme] = useState<Theme>(() =>
     readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark',
-  )
+  );
 
   const [palette, setPalette] = useState<AnimePalette>(() =>
     readAnimePalette(readPreference('wd-palette', 'classic')),
-  )
+  );
 
   const [page, setPage] = useState<Page>(() => {
-    const hash = location.hash.slice(1)
-    return isPage(hash) ? hash : 'overview'
-  })
+    const hash = location.hash.slice(1);
+    return isPage(hash) ? hash : 'overview';
+  });
 
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const github = useGithub(username)
-  const codex = useCodex()
+  const github = useGithub(username);
+  const codex = useCodex();
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme
+    document.documentElement.dataset.theme = theme;
 
     try {
-      localStorage.setItem('dc-theme', theme)
+      localStorage.setItem('dc-theme', theme);
     } catch {
       /* optional */
     }
-  }, [theme])
+  }, [theme]);
 
   useEffect(() => {
     try {
-      localStorage.setItem('dc-username', username)
+      localStorage.setItem('dc-username', username);
     } catch {
       /* optional */
     }
-  }, [username])
+  }, [username]);
 
   useEffect(() => {
     const handleHash = () => {
-      const hash = location.hash.slice(1)
-      setPage(isPage(hash) ? hash : 'overview')
-    }
+      const hash = location.hash.slice(1);
+      setPage(isPage(hash) ? hash : 'overview');
+    };
 
-    window.addEventListener('hashchange', handleHash)
-    return () => window.removeEventListener('hashchange', handleHash)
-  }, [])
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.palette = palette
+    document.documentElement.dataset.palette = palette;
 
     try {
-      localStorage.setItem('wd-palette', palette)
+      localStorage.setItem('wd-palette', palette);
     } catch {
       /* optional */
     }
-  }, [palette])
+  }, [palette]);
 
   function navigate(next: Page) {
-    setPage(next)
+    setPage(next);
 
     if (location.hash !== `#${next}`) {
-      location.hash = next
+      location.hash = next;
     }
 
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
   function refreshAll() {
-    void github.refresh(true)
-    void codex.refresh()
+    void github.refresh(true);
+    void codex.refresh();
   }
 
   return (
@@ -259,11 +262,11 @@ function MainApp() {
         </main>
       </div>
     </div>
-  )
+  );
 }
 
 export default function App() {
-  const isWidget = new URLSearchParams(location.search).get('widget') === '1' && desktopAvailable()
+  const isWidget = new URLSearchParams(location.search).get('widget') === '1' && desktopAvailable();
 
-  return isWidget ? <MiniApp /> : <MainApp />
+  return isWidget ? <MiniApp /> : <MainApp />;
 }

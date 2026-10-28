@@ -1,10 +1,10 @@
-import type { HTMLAttributes, ReactNode } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react';
 
-type Tone = 'neutral' | 'success' | 'warning'
+type Tone = 'neutral' | 'success' | 'warning';
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  tone?: Tone
-  children: ReactNode
+  tone?: Tone;
+  children: ReactNode;
 }
 
 export function Badge({ tone = 'neutral', className = '', children, ...props }: BadgeProps) {
@@ -12,5 +12,5 @@ export function Badge({ tone = 'neutral', className = '', children, ...props }: 
     <span {...props} className={`wd-badge wd-badge--${tone} ${className}`.trim()}>
       {children}
     </span>
-  )
+  );
 }

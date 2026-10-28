@@ -1,3 +1,3 @@
 /** Public GitHub feature API. Internal services are private to this feature. */
-export { useGithub } from './hooks/useGithub'
-export { getGithubNotice, hasGithubFailure } from './domain/githubStatus'
+export { useGithub } from './hooks/useGithub';
+export { getGithubNotice, hasGithubFailure } from './domain/githubStatus';

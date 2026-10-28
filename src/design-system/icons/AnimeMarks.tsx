@@ -1,7 +1,7 @@
-import type { SVGProps } from 'react'
+import type { SVGProps } from 'react';
 
 /** Original, lightweight SVG marks. No third-party icon assets or remote fonts. */
-type IconProps = SVGProps<SVGSVGElement>
+type IconProps = SVGProps<SVGSVGElement>;
 
 export function WaifuMark(props: IconProps) {
   return (
@@ -13,9 +13,14 @@ export function WaifuMark(props: IconProps) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path d="M24 3.5v5m-2.5-2.5h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path
+        d="M24 3.5v5m-2.5-2.5h5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
     </svg>
-  )
+  );
 }
 
 export function SakuraIcon(props: IconProps) {
@@ -31,7 +36,7 @@ export function SakuraIcon(props: IconProps) {
       <circle cx="16" cy="16" r="3" fill="#FFE6A7" />
       <circle cx="15" cy="15" r=".8" fill="#A45079" />
     </svg>
-  )
+  );
 }
 
 export function TsukiIcon(props: IconProps) {
@@ -43,5 +48,5 @@ export function TsukiIcon(props: IconProps) {
         fill="currentColor"
       />
     </svg>
-  )
+  );
 }

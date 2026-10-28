@@ -1,84 +1,84 @@
-import { useEffect, useRef, useState } from 'react'
-import { Check, Clipboard, FolderGit2, GitBranch, RefreshCw, ScrollText } from 'lucide-react'
-import { hiddenChangeCount, shortHash, type LocalGitSnapshot } from '../domain/localGit'
+import { useEffect, useRef, useState } from 'react';
+import { Check, Clipboard, FolderGit2, GitBranch, RefreshCw, ScrollText } from 'lucide-react';
+import { hiddenChangeCount, shortHash, type LocalGitSnapshot } from '../domain/localGit';
 import {
   inspectLocalRepository,
   localGitAvailable,
   previewReleaseNotes,
   selectLocalRepository,
-} from '../services/localGitService'
+} from '../services/localGitService';
 
 function describeError(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
+  return error instanceof Error ? error.message : String(error);
 }
 
 export function LocalGitPanel() {
-  const desktop = localGitAvailable()
-  const sequence = useRef(0)
-  const [snapshot, setSnapshot] = useState<LocalGitSnapshot | null>(null)
-  const [busy, setBusy] = useState(false)
-  const [generating, setGenerating] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [notes, setNotes] = useState('')
-  const [copied, setCopied] = useState(false)
+  const desktop = localGitAvailable();
+  const sequence = useRef(0);
+  const [snapshot, setSnapshot] = useState<LocalGitSnapshot | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [notes, setNotes] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(
     () => () => {
-      sequence.current += 1
+      sequence.current += 1;
     },
     [],
-  )
+  );
 
   async function load(path: string) {
-    const id = ++sequence.current
-    setBusy(true)
-    setGenerating(false)
-    setError(null)
-    setNotes('')
-    setSnapshot(null)
+    const id = ++sequence.current;
+    setBusy(true);
+    setGenerating(false);
+    setError(null);
+    setNotes('');
+    setSnapshot(null);
     try {
-      const result = await inspectLocalRepository(path)
-      if (id === sequence.current) setSnapshot(result)
+      const result = await inspectLocalRepository(path);
+      if (id === sequence.current) setSnapshot(result);
     } catch (issue) {
-      if (id === sequence.current) setError(describeError(issue))
+      if (id === sequence.current) setError(describeError(issue));
     } finally {
-      if (id === sequence.current) setBusy(false)
+      if (id === sequence.current) setBusy(false);
     }
   }
 
   async function pick() {
     try {
-      const path = await selectLocalRepository()
-      if (path) await load(path)
+      const path = await selectLocalRepository();
+      if (path) await load(path);
     } catch (issue) {
-      setError(describeError(issue))
+      setError(describeError(issue));
     }
   }
 
   async function generate() {
-    if (!snapshot) return
-    const id = sequence.current
-    setGenerating(true)
-    setError(null)
-    setNotes('')
-    setCopied(false)
+    if (!snapshot) return;
+    const id = sequence.current;
+    setGenerating(true);
+    setError(null);
+    setNotes('');
+    setCopied(false);
     try {
-      const text = await previewReleaseNotes(snapshot.path)
-      if (id === sequence.current) setNotes(text)
+      const text = await previewReleaseNotes(snapshot.path);
+      if (id === sequence.current) setNotes(text);
     } catch (issue) {
-      if (id === sequence.current) setError(describeError(issue))
+      if (id === sequence.current) setError(describeError(issue));
     } finally {
-      if (id === sequence.current) setGenerating(false)
+      if (id === sequence.current) setGenerating(false);
     }
   }
 
   async function copyNotes() {
-    if (!notes) return
+    if (!notes) return;
     try {
-      await navigator.clipboard.writeText(notes)
-      setCopied(true)
+      await navigator.clipboard.writeText(notes);
+      setCopied(true);
     } catch {
-      setError('Clipboard tidak tersedia. Pilih dan salin teks secara manual.')
+      setError('Clipboard tidak tersedia. Pilih dan salin teks secara manual.');
     }
   }
 
@@ -116,8 +116,8 @@ export function LocalGitPanel() {
 
       {!desktop && (
         <div className="wd-local-notice" role="status">
-          Fitur Git lokal hanya tersedia di aplikasi Tauri Desktop. Live Demo GitHub Pages tetap bisa
-          menampilkan repositori GitHub di bawah.
+          Fitur Git lokal hanya tersedia di aplikasi Tauri Desktop. Live Demo GitHub Pages tetap
+          bisa menampilkan repositori GitHub di bawah.
         </div>
       )}
       {busy && (
@@ -163,8 +163,8 @@ export function LocalGitPanel() {
               )}
               {hiddenChangeCount(snapshot.total_changes, snapshot.files.length) > 0 && (
                 <p className="wd-local-muted">
-                  +{hiddenChangeCount(snapshot.total_changes, snapshot.files.length)} file lainnya (preview
-                  dibatasi).
+                  +{hiddenChangeCount(snapshot.total_changes, snapshot.files.length)} file lainnya
+                  (preview dibatasi).
                 </p>
               )}
             </div>
@@ -224,5 +224,5 @@ export function LocalGitPanel() {
         </div>
       )}
     </section>
-  )
+  );
 }
