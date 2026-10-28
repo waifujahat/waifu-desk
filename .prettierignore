@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+src-tauri/target/
+*.zip
+*.lock
+src-backup-*/
+.waifudesk-stage2-backup/

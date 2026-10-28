@@ -1,0 +1,222 @@
+.app-main {
+  position: relative;
+  isolation: isolate;
+}
+
+.wd-wallpaper-layer {
+  position: absolute;
+  top: 68px;
+  left: 0;
+  right: 0;
+  height: min(78vh, 760px);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+}
+
+.wd-wallpaper-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right top;
+  display: block;
+}
+
+.app-main > .content-area {
+  position: relative;
+  z-index: 1;
+}
+
+.wd-wallpaper-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wd-wallpaper-settings .setting-title {
+  margin-bottom: 0;
+}
+
+.wd-wallpaper-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.wd-wallpaper-toggle > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wd-wallpaper-toggle input {
+  accent-color: var(--purple);
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.wd-wallpaper-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.wd-wallpaper-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+  min-width: 0;
+  text-align: left;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  color: var(--text);
+}
+
+.wd-wallpaper-choice:hover:not(:disabled),
+.wd-wallpaper-choice[aria-pressed='true'] {
+  border-color: var(--purple);
+}
+
+.wd-wallpaper-choice:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wd-wallpaper-preview {
+  width: 100%;
+  aspect-ratio: 1.7;
+  border-radius: 7px;
+  background: var(--surface-hover);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  color: var(--purple);
+}
+
+.wd-wallpaper-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wd-wallpaper-preview--auto {
+  background: linear-gradient(135deg, #57334f, #8b6aa5 50%, #294566);
+  color: white;
+}
+
+.wd-wallpaper-choice strong {
+  font-size: 11px;
+  padding: 0 3px;
+}
+
+.wd-wallpaper-choice small {
+  font-size: 10px;
+  color: var(--muted);
+  padding: 0 3px 3px;
+}
+
+.wd-wallpaper-opacity {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+}
+
+.wd-wallpaper-opacity label {
+  color: var(--muted);
+}
+.wd-wallpaper-opacity output {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.wd-wallpaper-opacity input {
+  width: 100%;
+  grid-column: 1 / -1;
+  accent-color: var(--purple);
+}
+.wd-wallpaper-opacity input:disabled {
+  opacity: 0.5;
+}
+
+@media (max-width: 900px) {
+  .wd-wallpaper-layer {
+    top: 63px;
+    height: min(62vh, 480px);
+  }
+}
+
+@media (max-width: 440px) {
+  .wd-wallpaper-choices {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .wd-wallpaper-choice small {
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wd-wallpaper-layer,
+  .wd-wallpaper-choice {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.wd-wallpaper-layer img,
+.wd-wallpaper-layer video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right top;
+  display: block;
+}
+
+.app-main {
+  position: relative;
+  min-height: 100dvh;
+  isolation: isolate;
+}
+
+.wd-wallpaper-layer {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.wd-wallpaper-layer video {
+  position: absolute;
+  inset: 0;
+
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center center;
+}
+
+.app-main > .content-area {
+  position: relative;
+  z-index: 1;
+}

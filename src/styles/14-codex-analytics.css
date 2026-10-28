@@ -1,0 +1,108 @@
+/* Codex analytics: compact, readable, with no decorative hero or empty cards. */
+.wd-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.wd-heatmap-grid {
+  display: grid;
+  grid-template-rows: repeat(7, 13px);
+  grid-auto-flow: column;
+  grid-auto-columns: 13px;
+  gap: 5px;
+  width: fit-content;
+  max-width: 100%;
+  overflow: auto;
+  padding: 3px 1px;
+}
+.wd-heatmap-cell {
+  display: block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background: var(--ring);
+  border: 1px solid color-mix(in srgb, var(--border), transparent 45%);
+}
+.wd-heatmap-level-1 {
+  background: color-mix(in srgb, var(--teal) 25%, var(--surface));
+}
+.wd-heatmap-level-2 {
+  background: color-mix(in srgb, var(--teal) 45%, var(--surface));
+}
+.wd-heatmap-level-3 {
+  background: color-mix(in srgb, var(--teal) 70%, var(--surface));
+}
+.wd-heatmap-level-4 {
+  background: var(--teal);
+}
+.wd-heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.wd-heatmap-legend span:first-child {
+  margin-right: 5px;
+}
+.wd-heatmap-legend span:last-child {
+  margin-left: 5px;
+}
+.wd-model-numbers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.wd-model-numbers b {
+  color: var(--text);
+  font-weight: 650;
+  font-size: 12px;
+}
+.wd-model-numbers small {
+  font-size: 11px;
+}
+.wd-session-scroll {
+  overflow-x: auto;
+}
+.wd-session-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: left;
+}
+.wd-session-table th {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.wd-session-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wd-session-table th:last-child,
+.wd-session-table td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.wd-session-table tr:last-child td {
+  border-bottom: none;
+}
+.wd-privacy-line {
+  color: var(--faint);
+  font-size: 11px;
+  margin: 11px 0 0;
+}
+@media (max-width: 650px) {
+  .wd-session-table {
+    min-width: 540px;
+  }
+}

@@ -1,0 +1,48 @@
+name: WaifuDesk Quality
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    name: Lint, format, build and tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Check frontend
+        run: npm run verify
+      - name: Check architectural boundaries
+        run: node scripts/check-architecture.mjs
+
+  rust:
+    name: Rust format, tests and Clippy
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: src-tauri
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Verify Rust formatting
+        run: cargo fmt --all -- --check
+      - name: Run Rust tests
+        run: cargo test --locked
+      - name: Run Clippy
+        run: cargo clippy --all-targets -- -D warnings

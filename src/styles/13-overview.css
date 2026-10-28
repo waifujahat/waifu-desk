@@ -1,0 +1,249 @@
+/* WaifuDesk v2 — overview components. No overrides of other pages. */
+.wd-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.wd-summary-panel {
+  min-height: 180px;
+  margin-bottom: 0;
+}
+
+.wd-summary-panel .panel-heading {
+  margin-bottom: 23px;
+}
+.wd-stat-label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+.wd-stat-value {
+  display: block;
+  color: var(--text);
+  font-size: clamp(32px, 3.5vw, 42px);
+  letter-spacing: -1.6px;
+  line-height: 1.25;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.wd-codex-metric {
+  display: flex;
+  gap: 20px;
+  align-items: end;
+  justify-content: space-between;
+  padding: 2px 0 18px;
+}
+.wd-codex-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+.wd-codex-secondary span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.wd-codex-secondary strong {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+}
+.wd-quotas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.wd-quota-line {
+  min-width: 0;
+}
+.wd-quota-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.wd-quota-head strong {
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.wd-quota-track {
+  margin-top: 10px;
+  height: 6px;
+  background: var(--ring);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.wd-quota-track > span {
+  display: block;
+  height: 100%;
+  background: var(--purple);
+  border-radius: inherit;
+}
+.wd-quota-line small {
+  display: block;
+  margin-top: 7px;
+  color: var(--faint);
+  font-size: 10px;
+}
+.wd-source-note {
+  margin: 17px 0 0;
+  color: var(--faint);
+  font-size: 10px;
+}
+
+.wd-github-metrics {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  padding: 1px 0 16px;
+}
+.wd-github-metrics > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wd-github-metrics span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.wd-github-metrics strong {
+  font-size: 23px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.wd-recent-repos {
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+.wd-recent-repo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  min-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+.wd-recent-repo:last-child {
+  border-bottom: none;
+}
+.wd-recent-repo > svg {
+  color: var(--faint);
+  flex: 0 0 auto;
+}
+.wd-recent-repo > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+.wd-recent-repo .external-link {
+  font-size: 12px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.wd-recent-repo small {
+  color: var(--faint);
+  font-size: 10px;
+}
+.wd-recent-repo > span {
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.wd-activity-preview {
+  margin: 16px 0 0;
+}
+.wd-activity-preview .chart-plot {
+  height: 150px;
+}
+
+.wd-data-state {
+  padding: 20px 0;
+  color: var(--text);
+}
+.wd-data-state strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+.wd-data-state p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.wd-data-state-action {
+  margin-top: 12px;
+}
+.wd-github-notice {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface-alt);
+}
+.wd-github-notice > svg {
+  color: var(--orange);
+  flex: none;
+  margin-top: 1px;
+}
+.wd-github-notice-copy {
+  flex: 1;
+  min-width: 0;
+}
+.wd-github-notice-copy strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+.wd-github-notice-copy p {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.wd-github-notice .wd-button {
+  align-self: center;
+}
+
+@media (max-width: 1120px) {
+  .wd-overview-grid {
+    grid-template-columns: 1fr;
+  }
+  .wd-summary-panel {
+    min-height: 0;
+  }
+}
+@media (max-width: 600px) {
+  .wd-quotas {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .wd-github-notice {
+    flex-wrap: wrap;
+  }
+  .wd-github-notice .wd-button {
+    margin-left: 23px;
+  }
+}
+
+/* Reuse the compact data state for empty list views. */
+.wd-collection-empty {
+  padding: 10px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}

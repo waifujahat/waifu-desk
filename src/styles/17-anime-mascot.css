@@ -1,0 +1,144 @@
+/* WaifuDesk Hana Mascot v1: unobtrusive overview companion, isolated from app data. */
+.wd-mascot-host {
+  position: fixed;
+  right: 18px;
+  bottom: 16px;
+  z-index: 15;
+  width: 164px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 8px 22px rgba(16, 17, 32, 0.3));
+}
+
+.wd-mascot-character {
+  width: 152px;
+  height: 150px;
+  display: block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 160ms ease;
+}
+
+.wd-mascot-character:hover {
+  transform: translateY(-4px);
+}
+.wd-mascot-character:focus-visible,
+.wd-mascot-hide:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
+}
+.wd-mascot-character img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.wd-mascot-hide {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--muted);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.wd-mascot-caption {
+  max-width: 154px;
+  padding: 5px 10px;
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.wd-mascot-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.wd-mascot-settings .setting-title {
+  margin-bottom: 0;
+}
+.wd-mascot-setting-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text);
+}
+.wd-mascot-setting-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--purple);
+  cursor: pointer;
+}
+.wd-mascot-settings-preview {
+  height: 108px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 14px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.wd-mascot-settings-preview img {
+  width: 95px;
+  height: 95px;
+  object-fit: contain;
+}
+.wd-mascot-expression-select {
+  width: 100%;
+  color: var(--text);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  font: inherit;
+  font-size: 12px;
+}
+.wd-mascot-expression-select:disabled {
+  opacity: 0.5;
+}
+.wd-mascot-setting-hint {
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Avoid covering real controls and charts in small windows. */
+@media (max-width: 1150px), (max-height: 640px) {
+  .wd-mascot-host {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wd-mascot-character {
+    transition: none;
+  }
+  .wd-mascot-character:hover {
+    transform: none;
+  }
+}

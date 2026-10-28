@@ -1,0 +1,78 @@
+/* WaifuDesk layout density — dashboard. Extracted without changing selectors or values. */
+
+.metrics-grid {
+  gap: 12px;
+  margin: 0 0 16px;
+}
+
+.metric-card,
+.panel,
+.filter-panel,
+.repo-card,
+.settings-panel {
+  box-shadow: none;
+  border-radius: 12px;
+}
+
+.metric-card {
+  padding: 18px;
+  min-height: 120px;
+  gap: 6px;
+}
+
+.metric-head {
+  font-size: 11px;
+}
+
+.metric-icon {
+  min-width: 32px;
+  height: 32px;
+}
+
+.metric-value {
+  font-size: 27px;
+  margin-top: 0;
+}
+
+.metric-detail {
+  margin-top: 1px;
+}
+
+.content-grid {
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.panel {
+  padding: 20px;
+  margin-bottom: 14px;
+}
+
+.content-grid .panel {
+  margin-bottom: 0;
+}
+
+.panel-heading {
+  margin-bottom: 15px;
+}
+
+.panel-heading h3 {
+  font-size: 14px;
+}
+
+.empty-state {
+  min-height: 110px;
+  padding: 18px;
+}
+
+.empty-state p {
+  max-width: 290px;
+}
+
+.empty-icon {
+  padding: 8px;
+}
+
+.standalone-note {
+  margin: 8px 0 18px;
+}

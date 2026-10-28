@@ -1,0 +1,117 @@
+/* Compact Tauri desktop window. */
+
+.mini-app {
+  padding: 20px;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.mini-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.mini-mark {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: linear-gradient(120deg, #776bf2, #ba95ed);
+  color: white;
+}
+
+.mini-head > div {
+  flex: 1;
+}
+
+.mini-head b {
+  display: block;
+  font-size: 12px;
+}
+
+.mini-head small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.mini-card {
+  border-radius: 21px;
+  border: 1px solid var(--border);
+  padding: 18px;
+  background: var(--surface);
+}
+
+.mini-top,
+.mini-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.mini-top {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mini-connected {
+  color: var(--teal);
+  font-size: 10px;
+}
+
+.mini-offline {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.mini-card .gauge {
+  width: 150px;
+  height: 150px;
+  margin: 14px auto;
+}
+
+.mini-card .gauge-value {
+  font-size: 36px;
+}
+
+.mini-label {
+  padding: 11px 0;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.mini-label span {
+  color: var(--muted);
+}
+
+.mini-label b {
+  font-size: 11px;
+}
+
+.mini-foot {
+  font-size: 10px;
+  text-align: center;
+  line-height: 1.6;
+  color: var(--faint);
+  padding: 17px 0 4px;
+}
+
+.mini-bottom-button {
+  border: 0;
+  background: transparent;
+  color: var(--purple);
+  font-size: 11px;
+  font-weight: 700;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}

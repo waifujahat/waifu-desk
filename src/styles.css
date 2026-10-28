@@ -1,0 +1,26 @@
+@import './styles/01-tokens.css';
+@import './styles/02-base.css';
+@import './styles/03-shell.css';
+@import './styles/04-dashboard.css';
+@import './styles/05-ai-insights.css';
+@import './styles/06-repositories.css';
+@import './styles/07-activity.css';
+@import './styles/08-settings.css';
+@import './styles/09-mini-widget.css';
+@import './styles/10-responsive.css';
+@import './styles/11-density-shell.css';
+@import './styles/11-density-dashboard.css';
+@import './styles/11-density-github.css';
+@import './styles/11-density-settings.css';
+@import './styles/11-density-responsive.css';
+@import './styles/12-primitives.css';
+@import './styles/13-overview.css';
+@import './styles/14-codex-analytics.css';
+/* Anime visual palettes; intentionally loaded after the base design system. */
+@import './styles/15-anime-palettes.css';
+/* wd-anime-edition-stages-1-2: optional anime wallpaper layer */
+@import './styles/16-anime-wallpapers.css';
+/* wd-hana-mascot-v1: Hana mascot on dashboard */
+@import './styles/17-anime-mascot.css';
+
+@import './styles/17-crud-glass.css';

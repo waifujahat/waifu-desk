@@ -1,0 +1,274 @@
+/* Settings, feedback and reusable states. */
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.settings-panel {
+  margin: 0;
+  min-height: 250px;
+}
+
+.setting-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.settings-symbol {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(153, 142, 255, 0.1);
+  color: var(--purple);
+}
+
+.setting-title h3 {
+  font-size: 14px;
+  margin: 0 0 5px;
+}
+
+.setting-title p {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.field-label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+  border-radius: 11px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.setting-prefix {
+  font-size: 11px;
+  color: var(--faint);
+  padding-left: 12px;
+}
+
+.setting-row input {
+  min-width: 0;
+  width: 100%;
+  flex: 1;
+  color: var(--text);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  padding: 11px 6px;
+  font-size: 12px;
+}
+
+.setting-row .btn-primary {
+  border-radius: 0;
+  height: 44px;
+  box-shadow: none;
+}
+
+.field-feedback {
+  font-size: 10px;
+  color: var(--teal);
+  margin: 8px 0 0;
+}
+
+.setting-hint {
+  font-size: 10px;
+  color: var(--faint);
+  line-height: 1.7;
+  margin: 15px 0 0;
+}
+
+.setting-hint code {
+  font-family: ui-monospace, Consolas, monospace;
+  background: var(--surface-alt);
+  padding: 2px 3px;
+  border-radius: 3px;
+}
+
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+
+.theme-option {
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 7px;
+  position: relative;
+  border-radius: 12px;
+  padding: 18px 14px;
+  background: var(--surface-alt);
+  color: var(--muted);
+}
+
+.theme-option.chosen {
+  border-color: var(--purple);
+  color: var(--purple);
+  background: rgba(153, 142, 255, 0.07);
+}
+
+.theme-option strong {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.theme-option span {
+  font-size: 10px;
+}
+
+.theme-option > svg:last-child:not(:first-child) {
+  position: absolute;
+  right: 12px;
+  top: 15px;
+}
+
+.settings-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.setting-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 19px;
+}
+
+.privacy-items {
+  display: grid;
+  gap: 11px;
+  margin: -3px 0 20px;
+}
+
+.privacy-items div {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.privacy-items svg {
+  flex: none;
+  color: var(--purple);
+  margin-top: 1px;
+}
+
+.empty-state {
+  width: 100%;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.empty-icon {
+  color: var(--purple);
+  background: var(--surface-alt);
+  border-radius: 14px;
+  padding: 11px;
+}
+
+.empty-state strong {
+  font-size: 13px;
+}
+
+.empty-state p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+  max-width: 360px;
+  margin: 0;
+}
+
+.alert-box {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  background: rgba(153, 142, 255, 0.08);
+  color: var(--muted);
+  border: 1px solid rgba(153, 142, 255, 0.25);
+  border-radius: 11px;
+  padding: 13px 15px;
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
+
+.alert-box svg {
+  color: var(--purple);
+  flex: none;
+}
+
+.alert-box code {
+  font-family: ui-monospace, Consolas, monospace;
+  color: var(--text);
+}
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.spinner {
+  animation: spin 0.95s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Read-only location field: the path is chosen with Windows File Explorer. */
+.wd-directory-path {
+  width: 100%;
+  min-width: 0;
+  padding: 11px 12px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text);
+  font:
+    12px ui-monospace,
+    Consolas,
+    monospace;
+  text-overflow: ellipsis;
+}
+.wd-directory-path:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}

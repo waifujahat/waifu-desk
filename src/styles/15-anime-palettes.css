@@ -1,0 +1,186 @@
+/* WaifuDesk visual palettes — presentation only; no changes to data, API or navigation. */
+
+/* Sakura: warm plum surfaces + restrained rose accents. */
+:root[data-palette='sakura'] {
+  --color-bg: #18141c;
+  --color-sidebar: #211922;
+  --color-surface: #251d29;
+  --color-surface-raised: #312535;
+  --color-hover: #392c3e;
+  --color-border: #483549;
+  --color-text: #f9eef4;
+  --color-text-secondary: #cbb9c6;
+  --color-text-tertiary: #a991a2;
+  --color-accent: #f2a1c5;
+  --color-teal: #82d8c7;
+  --color-blue: #b8b4f8;
+  --color-warning: #f3c18a;
+  --ring: #413146;
+  --grad-start: #bd668f;
+  --grad-end: #a77bd8;
+}
+
+:root[data-theme='light'][data-palette='sakura'] {
+  --color-bg: #fff8fa;
+  --color-sidebar: #fffcfd;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fbeef3;
+  --color-hover: #f8e5ed;
+  --color-border: #f0dbe5;
+  --color-text: #392b39;
+  --color-text-secondary: #725c6e;
+  --color-text-tertiary: #8b7584;
+  --color-accent: #ac4677;
+  --color-teal: #288b80;
+  --color-blue: #7468a8;
+  --color-warning: #9a672f;
+  --ring: #f1e1e9;
+  --grad-start: #ce719d;
+  --grad-end: #aa79c3;
+}
+
+/* Tsuki: moonlit indigo and desaturated sky blue. */
+:root[data-palette='tsuki'] {
+  --color-bg: #111522;
+  --color-sidebar: #141b2b;
+  --color-surface: #1b2334;
+  --color-surface-raised: #222d42;
+  --color-hover: #29364d;
+  --color-border: #33435b;
+  --color-text: #f0f5ff;
+  --color-text-secondary: #b3c3d9;
+  --color-text-tertiary: #8b9fb9;
+  --color-accent: #9ec6ff;
+  --color-teal: #79dacb;
+  --color-blue: #a3bcff;
+  --color-warning: #e9bf8d;
+  --ring: #304059;
+  --grad-start: #557bb8;
+  --grad-end: #877fcc;
+}
+
+:root[data-theme='light'][data-palette='tsuki'] {
+  --color-bg: #f6f9fe;
+  --color-sidebar: #fcfdff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ebf2fb;
+  --color-hover: #e2ebf8;
+  --color-border: #dbe4f1;
+  --color-text: #24344a;
+  --color-text-secondary: #5e7088;
+  --color-text-tertiary: #7689a2;
+  --color-accent: #346eb4;
+  --color-teal: #268c83;
+  --color-blue: #4874bd;
+  --color-warning: #98703d;
+  --ring: #e3ebf7;
+  --grad-start: #507bba;
+  --grad-end: #7c87cc;
+}
+
+/* Quiet atmosphere: only a soft halo; it never captures clicks. */
+:root[data-palette='sakura'] .content-area {
+  background-image: radial-gradient(
+    ellipse 58% 300px at 96% 0,
+    color-mix(in srgb, var(--color-accent) 9%, transparent),
+    transparent 80%
+  );
+  background-repeat: no-repeat;
+}
+:root[data-palette='tsuki'] .content-area {
+  background-image: radial-gradient(
+    ellipse 58% 300px at 96% 0,
+    color-mix(in srgb, var(--color-accent) 10%, transparent),
+    transparent 80%
+  );
+  background-repeat: no-repeat;
+}
+
+:root[data-palette='sakura'] .logo-icon,
+:root[data-palette='tsuki'] .logo-icon {
+  background: linear-gradient(145deg, var(--grad-start), var(--grad-end));
+  color: #fff;
+}
+
+.wd-palette-description {
+  color: var(--muted);
+  margin: 0 0 14px;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.wd-palette-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wd-palette-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  min-height: 114px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface-alt);
+  color: var(--text);
+  text-align: left;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.wd-palette-option:hover {
+  border-color: var(--purple);
+}
+.wd-palette-option:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+.wd-palette-option[aria-pressed='true'] {
+  border-color: var(--purple);
+  background: var(--surface-hover);
+}
+.wd-palette-option svg {
+  width: 25px;
+  height: 25px;
+  color: var(--purple);
+}
+.wd-palette-option--sakura svg {
+  color: #e88ab5;
+}
+.wd-palette-option--tsuki svg {
+  color: #8eb9f3;
+}
+.wd-palette-option strong {
+  font-size: 12px;
+  font-weight: 650;
+}
+.wd-palette-option small {
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+@media (max-width: 480px) {
+  .wd-palette-options {
+    grid-template-columns: 1fr;
+  }
+  .wd-palette-option {
+    min-height: 0;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .wd-palette-option small {
+    width: 100%;
+    padding-left: 32px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wd-palette-option {
+    transition: none;
+  }
+}

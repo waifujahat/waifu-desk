@@ -1,0 +1,124 @@
+/* Activity view. */
+
+.activity-layout {
+  margin-top: 20px;
+}
+
+.event-stream {
+  max-height: 610px;
+  overflow: auto;
+  padding-right: 8px;
+}
+
+.event-row {
+  display: flex;
+  gap: 13px;
+  align-items: start;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+}
+
+.event-row:first-child {
+  padding-top: 0;
+}
+
+.event-row:last-child {
+  border: 0;
+}
+
+.event-timeline-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(153, 142, 255, 0.1);
+  color: var(--purple);
+  flex: none;
+}
+
+.event-body {
+  min-width: 0;
+  flex: 1;
+}
+
+.event-body strong {
+  font-size: 12px;
+}
+
+.event-body p {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 5px 0;
+}
+
+.event-body p .external-link {
+  color: var(--purple);
+  font-size: 11px;
+}
+
+.event-body small {
+  font-size: 10px;
+  color: var(--faint);
+}
+
+.event-trail {
+  color: var(--faint);
+  margin-top: 5px;
+}
+
+.event-breakdown {
+  padding: 6px 0;
+}
+
+.category-row {
+  margin-bottom: 21px;
+}
+
+.category-row > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.category-row strong {
+  margin-left: auto;
+  color: var(--text);
+}
+
+.category-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--purple);
+}
+
+.category-dot.c-1 {
+  background: var(--teal);
+}
+
+.category-dot.c-2 {
+  background: var(--blue);
+}
+
+.category-dot.c-3 {
+  background: var(--orange);
+}
+
+.category-track {
+  height: 7px;
+  border-radius: 20px;
+  background: var(--ring);
+  overflow: hidden;
+}
+
+.category-track span {
+  height: 100%;
+  display: block;
+  background: linear-gradient(90deg, var(--purple), #bfb2ff);
+  border-radius: 20px;
+}

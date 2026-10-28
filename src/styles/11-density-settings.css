@@ -1,0 +1,25 @@
+/* WaifuDesk layout density — settings. Extracted without changing selectors or values. */
+
+.settings-grid {
+  gap: 14px;
+}
+
+.settings-panel {
+  min-height: 0;
+}
+
+.setting-title {
+  margin-bottom: 18px;
+}
+
+.setting-title h3 {
+  margin: 0;
+}
+
+.theme-options {
+  margin-top: 10px;
+}
+
+.theme-option {
+  min-height: 95px;
+}

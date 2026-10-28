@@ -1,0 +1,49 @@
+/* WaifuDesk layout density — responsive. Extracted without changing selectors or values. */
+
+@media (max-width: 1220px) {
+  .sidebar {
+    width: 208px;
+    min-width: 208px;
+    flex-basis: 208px;
+  }
+  .content-area {
+    padding-inline: 22px;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    flex-basis: 260px;
+  }
+}
+
+@media (max-width: 700px) {
+  .topbar {
+    height: 58px;
+    padding-inline: 16px;
+  }
+  .content-area {
+    padding: 20px 15px;
+  }
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .metric-card {
+    min-height: 115px;
+    padding: 13px;
+  }
+  .panel {
+    padding: 16px;
+  }
+  .page-header h1 {
+    font-size: 23px;
+  }
+}
+
+@media (max-width: 370px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

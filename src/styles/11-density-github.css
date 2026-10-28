@@ -1,0 +1,35 @@
+/* WaifuDesk layout density — github. Extracted without changing selectors or values. */
+
+.filter-panel {
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.filter-grid {
+  gap: 10px;
+}
+
+.reset-filters {
+  margin-top: 12px;
+}
+
+.repo-cards {
+  gap: 12px;
+}
+
+.repo-card {
+  padding: 18px;
+}
+
+.repo-title {
+  margin-top: 12px;
+}
+
+.repo-card p {
+  min-height: 0;
+  margin: 8px 0 13px;
+}
+
+.repo-topics {
+  min-height: 0;
+}

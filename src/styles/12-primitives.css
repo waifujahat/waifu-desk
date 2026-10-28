@@ -1,0 +1,118 @@
+/* WaifuDesk shared components. Each class belongs to one primitive. */
+.wd-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+.wd-button--sm {
+  min-height: 32px;
+  padding-inline: 10px;
+  font-size: 11px;
+}
+.wd-button--primary {
+  background: var(--purple);
+  color: var(--bg);
+}
+.wd-button--primary:hover:not(:disabled) {
+  filter: brightness(1.09);
+}
+.wd-button--secondary {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+.wd-button--secondary:hover:not(:disabled) {
+  background: var(--surface-hover);
+}
+.wd-button--ghost {
+  background: transparent;
+  color: var(--muted);
+}
+.wd-button--ghost:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.wd-button--icon {
+  width: 36px;
+  min-height: 36px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+}
+.wd-button--icon:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.wd-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.wd-button:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+.wd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.wd-badge--success {
+  color: var(--teal);
+}
+.wd-badge--warning {
+  color: var(--orange);
+}
+.panel-title-block {
+  min-width: 0;
+}
+.panel-description {
+  margin: 5px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .wd-button {
+    transition: none;
+  }
+}
+
+/* The mobile menu must remain hidden on desktop despite the shared button display. */
+.wd-button.menu-button {
+  display: none;
+}
+@media (max-width: 900px) {
+  .wd-button.menu-button {
+    display: inline-flex;
+  }
+}
+
+/* Keep the save action flush with the GitHub username field. */
+.setting-row .wd-button.settings-save {
+  min-height: 44px;
+  border-radius: 0;
+}

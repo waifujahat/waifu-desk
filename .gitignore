@@ -1,0 +1,26 @@
+node_modules/
+
+# Build artifacts
+dist/
+src-tauri/target/
+
+.env
+.env.*
+!.env.example
+auth.json
+.codex/
+
+.waifudesk-*-backup/
+src-backup*/
+usage-backup-*.rs
+*.bak
+*.zip
+
+# Logs
+*.log
+
+.DS_Store
+Thumbs.db
+!/src/assets/anime/wallpapers/sakura-blade-elegance.mp4
+
+/src-tauri/gen/schemas/

@@ -1,0 +1,369 @@
+/* Application shell, sidebar and top navigation. */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 250px;
+  min-width: 250px;
+  flex: 0 0 250px;
+  display: flex;
+  flex-direction: column;
+  padding: 35px 18px 21px;
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+  z-index: 10;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 7px 0 8px;
+  margin-bottom: 35px;
+  min-width: 0;
+}
+
+.logo-icon {
+  width: 41px;
+  height: 41px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--purple);
+  box-shadow: none;
+  color: white;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.brand-row strong {
+  display: block;
+  font-family: inherit;
+  font-size: 13.4px;
+  white-space: nowrap;
+  letter-spacing: -0.55px;
+  font-weight: 800;
+}
+
+.brand-accent {
+  color: var(--purple);
+}
+
+.brand-row small {
+  display: block;
+  color: var(--faint);
+  font-size: 8px;
+  letter-spacing: 1.25px;
+  margin-top: 5px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.sidebar-label {
+  font-size: 10px;
+  color: var(--faint);
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding-left: 17px;
+  margin-bottom: 14px;
+}
+
+.sidebar-label.second-label {
+  margin-top: 37px;
+}
+
+.side-nav {
+  display: grid;
+  gap: 6px;
+}
+
+.nav-item {
+  position: relative;
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  padding: 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.nav-item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.nav-item.active {
+  background: var(--surface-hover);
+  color: var(--text);
+  border-color: transparent;
+}
+
+.nav-indicator {
+  margin-left: auto;
+  height: 17px;
+  width: 3px;
+  border-radius: 5px;
+  background: var(--purple);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--purple);
+}
+
+.side-spacer {
+  flex: 1;
+}
+
+.sidebar-github {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 11px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: 20px;
+  color: var(--purple);
+}
+
+.sidebar-github div {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-github b,
+.sidebar-github small {
+  display: block;
+  white-space: nowrap;
+}
+
+.sidebar-github b {
+  color: var(--text);
+  font-size: 11px;
+}
+
+.sidebar-github small {
+  color: var(--faint);
+  font-size: 9px;
+  margin-top: 3px;
+}
+
+.online-dot,
+.footer-dot {
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  border-radius: 50%;
+  background: #55d8a2;
+  box-shadow: 0 0 0 3px rgba(85, 216, 162, 0.1);
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 5px 0;
+  border-top: 1px solid var(--border);
+}
+
+.user-avatar,
+.top-profile span {
+  display: grid;
+  place-items: center;
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.user-avatar {
+  width: 37px;
+  height: 37px;
+  border-radius: 11px;
+  font-size: 14px;
+}
+
+.user-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.user-text strong,
+.user-text small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-text strong {
+  font-size: 12px;
+}
+
+.user-text small {
+  font-size: 10px;
+  color: var(--faint);
+  margin-top: 4px;
+}
+
+.user-more {
+  color: var(--faint);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.app-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.topbar {
+  height: 78px;
+  padding: 0 39px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--sidebar);
+  position: sticky;
+  top: 0;
+  z-index: 8;
+}
+
+.top-left,
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-left {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.top-left strong {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.crumb-slash {
+  color: var(--faint);
+  font-size: 16px;
+}
+
+.top-actions {
+  gap: 12px;
+}
+
+.top-search {
+  width: 214px;
+  height: 36px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-align: left;
+  font-size: 11px;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.top-search span {
+  flex: 1;
+}
+
+.top-search kbd {
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.icon-button {
+  width: 37px;
+  height: 37px;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--muted);
+  background: var(--surface);
+  box-shadow: none;
+}
+
+.icon-button:hover,
+.btn-outline:hover {
+  color: var(--text);
+  background: var(--surface-hover);
+}
+
+.icon-button.small {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+}
+
+.top-profile {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+.top-profile span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 10px;
+}
+
+.menu-button,
+.mobile-close,
+.mobile-backdrop {
+  display: none;
+}
+
+.content-area {
+  padding: 33px 39px 16px;
+  max-width: 1690px;
+  margin: 0 auto;
+}
+
+/* The current page title is shown in the content header, not duplicated here. */
+.topbar-product {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+}

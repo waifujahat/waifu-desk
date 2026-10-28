@@ -1,0 +1,78 @@
+/* WaifuDesk foundations — theme tokens are defined once here. */
+:root {
+  color-scheme: dark;
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-synthesis: none;
+
+  /* Semantic surfaces and typography */
+  --color-bg: #111418;
+  --color-sidebar: #151a20;
+  --color-surface: #191e24;
+  --color-surface-raised: #202730;
+  --color-hover: #272f39;
+  --color-border: #303842;
+  --color-text: #f0f3f6;
+  --color-text-secondary: #acb5c1;
+  --color-text-tertiary: #8793a2;
+  --color-accent: #a69ef9;
+  --color-teal: #69cdb3;
+  --color-blue: #88b9e9;
+  --color-warning: #e8b47c;
+
+  /* Spacing and shape scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-control: 9px;
+  --radius-panel: 12px;
+  --focus-outline: 2px solid var(--color-accent);
+
+  /* Compatibility aliases: existing pages keep working during migration. */
+  --bg: var(--color-bg);
+  --sidebar: var(--color-sidebar);
+  --surface: var(--color-surface);
+  --surface-alt: var(--color-surface-raised);
+  --surface-hover: var(--color-hover);
+  --border: var(--color-border);
+  --text: var(--color-text);
+  --muted: var(--color-text-secondary);
+  --faint: var(--color-text-tertiary);
+  --purple: var(--color-accent);
+  --teal: var(--color-teal);
+  --blue: var(--color-blue);
+  --orange: var(--color-warning);
+  --grad-start: #786ee4;
+  --grad-end: #968be9;
+  --shadow: none;
+  --ring: #333d48;
+
+  background: var(--bg);
+  color: var(--text);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-bg: #f7f8fa;
+  --color-sidebar: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-raised: #f1f3f6;
+  --color-hover: #eceff4;
+  --color-border: #e1e6eb;
+  --color-text: #222936;
+  --color-text-secondary: #606c7d;
+  --color-text-tertiary: #768497;
+  --color-accent: #6258c7;
+  --color-teal: #248a70;
+  --color-blue: #356da6;
+  --color-warning: #a56b35;
+  --grad-start: #7567d7;
+  --grad-end: #9681e0;
+  --ring: #e8ebf0;
+}

@@ -1,0 +1,99 @@
+/*
+ * WaifuDesk — CRUD Glass (local presentation layer)
+ * Inspired by the navy/violet palette of waifujahat/my-first-crud.
+ * Keep this file AFTER all other CSS imports, especially 15- and 16-.
+ * No opacity on parent containers: text and buttons must stay fully opaque.
+ */
+
+/* Dark appearance: CRUD Operator's navy foundation; character-theme accents remain intact. */
+:root:not([data-theme='light']) {
+  --color-bg: #101522;
+  --color-sidebar: #182131;
+  --color-surface: #1c2535;
+  --color-surface-raised: #263246;
+  --color-hover: #303d57;
+  --color-border: #36445a;
+  --color-text: #edf2ff;
+  --color-text-secondary: #c4cede;
+  --color-text-tertiary: #a4b2c9;
+
+  --wd-glass-panel: rgba(28, 37, 53, 0.75);
+  --wd-glass-shell: rgba(24, 33, 49, 0.91);
+  --wd-glass-control: rgba(38, 50, 70, 0.74);
+  --wd-glass-outline: rgba(164, 178, 201, 0.28);
+  --wd-glass-nav: rgba(57, 50, 92, 0.74);
+}
+
+/* Light appearance still follows the existing light-mode typography/accents. */
+:root[data-theme='light'] {
+  --wd-glass-panel: rgba(255, 255, 255, 0.84);
+  --wd-glass-shell: rgba(248, 250, 255, 0.93);
+  --wd-glass-control: rgba(233, 239, 249, 0.83);
+  --wd-glass-outline: rgba(128, 147, 179, 0.31);
+  --wd-glass-nav: rgba(221, 226, 248, 0.9);
+}
+
+/* The animated wallpaper stays untouched and behind the content. */
+.app-main > .content-area {
+  background-image: none;
+}
+
+/* Solid enough for navigation; translucent so the UI feels like one composition. */
+.sidebar,
+.topbar {
+  background: var(--wd-glass-shell);
+  border-color: var(--wd-glass-outline);
+}
+
+/* All primary cards: rgba background, NOT opacity on the whole element. */
+.metric-card,
+.panel,
+.filter-panel,
+.repo-card,
+.settings-panel,
+.wd-collection-empty {
+  background: var(--wd-glass-panel);
+  border-color: var(--wd-glass-outline);
+  box-shadow: 0 8px 28px rgba(3, 7, 18, 0.1);
+}
+
+/* Controls, nested panels and labels should not create opaque rectangles. */
+.search-field,
+.select-wrap,
+.repo-flags,
+.panel-tag,
+.status-chip,
+.wd-badge,
+.wd-palette-option,
+.wd-github-notice,
+.sidebar-github,
+.icon-button:not(.small),
+.wd-button--secondary,
+.wd-wallpaper-choice {
+  background: var(--wd-glass-control);
+  border-color: var(--wd-glass-outline);
+}
+
+/* Retain original functionality and the existing character-theme accent color. */
+.nav-item:hover,
+.nav-item.active,
+.wd-palette-option[aria-pressed='true'] {
+  background: var(--wd-glass-nav);
+}
+
+.nav-item.active,
+.nav-item:hover {
+  color: var(--text);
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, #508bff, #8368ef);
+  color: #fff;
+}
+
+/* Keep the wallpaper and mascot visible, but never reduce text opacity. */
+.wd-wallpaper-layer {
+  pointer-events: none;
+}
+
+/* Avoid heavy blur layers over a 4K video, which would burden WebView2. */
