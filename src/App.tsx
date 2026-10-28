@@ -1,9 +1,9 @@
+import MiniApp from './components/MiniApp';
 import { MascotHost } from './features/appearance/components/MascotHost';
 import { useMascot } from './features/appearance/hooks/useMascot';
 import { WallpaperLayer, useAppearance } from './features/appearance';
 import { readAnimePalette, type AnimePalette } from './design-system/animeTheme';
 import { useEffect, useState } from 'react';
-import { BrainCircuit, RefreshCw } from 'lucide-react';
 import type { Page, Theme } from './types';
 import { useGithub } from './features/github/index';
 import { useCodex } from './features/codex/index';
@@ -14,9 +14,7 @@ import AI from './pages/AI';
 import Repositories from './pages/Repositories';
 import Activity from './pages/Activity';
 import Settings from './pages/Settings';
-import { compact, dateTime } from './lib/format';
-import { desktopAvailable, toggleMini } from './lib/desktop';
-import { Ring } from './components/Charts';
+import { desktopAvailable } from './lib/desktop';
 
 const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings'];
 const isPage = (value: string): value is Page => PAGES.includes(value as Page);
@@ -27,75 +25,6 @@ function readPreference(key: string, fallback: string) {
   } catch {
     return fallback;
   }
-}
-
-function MiniApp() {
-  const codex = useCodex();
-  const latest = codex.data?.limits.find((item) => item.label === '5-hour window');
-  const weekly = codex.data?.limits.find((item) => item.label === 'Weekly window');
-
-  useEffect(() => {
-    document.documentElement.dataset.theme =
-      readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark';
-    document.documentElement.dataset.palette = readAnimePalette(
-      readPreference('wd-palette', 'classic'),
-    );
-  }, []);
-
-  return (
-    <div className="mini-app">
-      <div className="mini-head">
-        <span className="mini-mark">
-          <BrainCircuit size={20} />
-        </span>
-        <div>
-          <b>Codex</b>
-          <small>WaifuDesk</small>
-        </div>
-        <button
-          className="icon-button"
-          type="button"
-          title="Perbarui"
-          aria-label="Perbarui"
-          onClick={() => void codex.refresh()}
-        >
-          <RefreshCw size={16} className={codex.loading ? 'spinner' : ''} />
-        </button>
-      </div>
-
-      <div className="mini-card">
-        <div className="mini-top">
-          <span>Batas 5 jam</span>
-          <span className={codex.data?.connected ? 'mini-connected' : 'mini-offline'}>
-            {codex.data?.connected ? 'Lokal' : 'Tidak tersedia'}
-          </span>
-        </div>
-
-        <Ring percent={latest?.usedPercent ?? null} label="tersisa" caption="laporan lokal" />
-
-        <div className="mini-label">
-          <span>Mingguan</span>
-          <b>{weekly ? `${Math.round(100 - weekly.usedPercent)}%` : '—'}</b>
-        </div>
-
-        <div className="mini-label">
-          <span>Token · 30 hari</span>
-          <b>{codex.data?.connected ? compact(codex.data.totalTokens) : '—'}</b>
-        </div>
-
-        <div className="mini-label">
-          <span>Diperbarui</span>
-          <b>{dateTime(codex.data?.lastSeenAt)}</b>
-        </div>
-      </div>
-
-      <p className="mini-foot">Laporan lokal · bukan real-time</p>
-
-      <button type="button" className="mini-bottom-button" onClick={() => void toggleMini()}>
-        Tutup widget
-      </button>
-    </div>
-  );
 }
 
 function MainApp() {
