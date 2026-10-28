@@ -1,3 +1,8 @@
+import {
+  filterRepositories,
+  getRepositoryLanguages,
+  type RepositorySort,
+} from '../features/github/domain/repositoryFilters';
 import { Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { GitHubRepo } from '../types';
@@ -8,8 +13,6 @@ import { RepositoryCard } from '../features/github/components/RepositoryCard';
 import { Badge } from '../design-system/components/Badge';
 import { Button } from '../design-system/components/Button';
 import { LocalGitPanel } from '../features/local-git';
-
-type Sort = 'recent' | 'name' | 'stars' | 'forks';
 
 interface RepositoriesProps {
   repos: GitHubRepo[];
@@ -28,37 +31,14 @@ export default function Repositories({
 }: RepositoriesProps) {
   const [query, setQuery] = useState('');
   const [language, setLanguage] = useState('all');
-  const [sort, setSort] = useState<Sort>('recent');
+  const [sort, setSort] = useState<RepositorySort>('recent');
 
-  const languages = useMemo(
-    () =>
-      [
-        ...new Set(
-          repos.map((repo) => repo.language).filter((item): item is string => Boolean(item)),
-        ),
-      ].sort(),
-    [repos],
+  const languages = useMemo(() => getRepositoryLanguages(repos), [repos]);
+
+  const filtered = useMemo(
+    () => filterRepositories(repos, { query, language, sort }),
+    [repos, query, language, sort],
   );
-
-  const filtered = useMemo(() => {
-    const term = query.trim().toLowerCase();
-    const results = repos.filter((repo) => {
-      const matchesText = `${repo.name} ${repo.description || ''} ${repo.language || ''}`
-        .toLowerCase()
-        .includes(term);
-      return matchesText && (language === 'all' || repo.language === language);
-    });
-
-    return results.sort((a, b) => {
-      if (sort === 'name') return a.name.localeCompare(b.name);
-      if (sort === 'stars') return b.stargazers_count - a.stargazers_count;
-      if (sort === 'forks') return b.forks_count - a.forks_count;
-      return (
-        new Date(b.pushed_at || b.updated_at).getTime() -
-        new Date(a.pushed_at || a.updated_at).getTime()
-      );
-    });
-  }, [repos, query, language, sort]);
 
   const activeFilters = Boolean(query || language !== 'all' || sort !== 'recent');
   const failed = Boolean(error) || hasGithubFailure(warnings, 'Repositori');
@@ -108,7 +88,10 @@ export default function Repositories({
             </label>
             <label className="select-wrap">
               <span>Urutkan</span>
-              <select value={sort} onChange={(event) => setSort(event.target.value as Sort)}>
+              <select
+                value={sort}
+                onChange={(event) => setSort(event.target.value as RepositorySort)}
+              >
                 <option value="recent">Terbaru</option>
                 <option value="name">Nama A–Z</option>
                 <option value="stars">Bintang</option>
