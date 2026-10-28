@@ -1,27 +1,27 @@
-/* WaifuDesk layout density — responsive. Extracted without changing selectors or values. */
-
 @media (max-width: 1220px) {
-  .sidebar {
-    width: 208px;
-    min-width: 208px;
-    flex-basis: 208px;
-  }
   .content-area {
     padding-inline: 22px;
   }
 }
 
+@media (min-width: 901px) and (max-width: 1220px) {
+  :root {
+    --wd-sidebar-width: 208px;
+  }
+}
+
 @media (max-width: 900px) {
-  .sidebar {
-    width: 260px;
-    min-width: 260px;
-    flex-basis: 260px;
+  :root {
+    --wd-sidebar-width: 260px;
   }
 }
 
 @media (max-width: 700px) {
+  :root {
+    --wd-topbar-height: 58px;
+  }
+
   .topbar {
-    height: 58px;
     padding-inline: 16px;
   }
   .content-area {
