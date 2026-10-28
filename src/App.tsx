@@ -2,9 +2,8 @@ import MiniApp from './components/MiniApp';
 import { MascotHost } from './features/appearance/components/MascotHost';
 import { useMascot } from './features/appearance/hooks/useMascot';
 import { WallpaperLayer, useAppearance } from './features/appearance';
-import { readAnimePalette, type AnimePalette } from './design-system/animeTheme';
 import { useEffect, useState } from 'react';
-import type { Page, Theme } from './types';
+import type { Page } from './types';
 import { useGithub } from './features/github/index';
 import { useCodex } from './features/codex/index';
 import Sidebar from './components/Sidebar';
@@ -15,32 +14,16 @@ import Repositories from './pages/Repositories';
 import Activity from './pages/Activity';
 import Settings from './pages/Settings';
 import { desktopAvailable } from './lib/desktop';
+import { useAppPreferences } from './hooks/useAppPreferences';
 
 const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings'];
 const isPage = (value: string): value is Page => PAGES.includes(value as Page);
 
-function readPreference(key: string, fallback: string) {
-  try {
-    return localStorage.getItem(key) || fallback;
-  } catch {
-    return fallback;
-  }
-}
-
 function MainApp() {
-  // Hana tetap aktif, hanya panel pengaturannya yang dihapus.
   const { mascot, updateMascot } = useMascot();
   const { wallpaper, updateWallpaper } = useAppearance();
 
-  const [username, setUsername] = useState(() => readPreference('dc-username', 'waifujahat'));
-
-  const [theme, setTheme] = useState<Theme>(() =>
-    readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark',
-  );
-
-  const [palette, setPalette] = useState<AnimePalette>(() =>
-    readAnimePalette(readPreference('wd-palette', 'classic')),
-  );
+  const { username, setUsername, theme, setTheme, palette, setPalette } = useAppPreferences();
 
   const [page, setPage] = useState<Page>(() => {
     const hash = location.hash.slice(1);
@@ -53,24 +36,6 @@ function MainApp() {
   const codex = useCodex();
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-
-    try {
-      localStorage.setItem('dc-theme', theme);
-    } catch {
-      /* optional */
-    }
-  }, [theme]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('dc-username', username);
-    } catch {
-      /* optional */
-    }
-  }, [username]);
-
-  useEffect(() => {
     const handleHash = () => {
       const hash = location.hash.slice(1);
       setPage(isPage(hash) ? hash : 'overview');
@@ -79,16 +44,6 @@ function MainApp() {
     window.addEventListener('hashchange', handleHash);
     return () => window.removeEventListener('hashchange', handleHash);
   }, []);
-
-  useEffect(() => {
-    document.documentElement.dataset.palette = palette;
-
-    try {
-      localStorage.setItem('wd-palette', palette);
-    } catch {
-      /* optional */
-    }
-  }, [palette]);
 
   function navigate(next: Page) {
     setPage(next);
@@ -105,6 +60,10 @@ function MainApp() {
     void codex.refresh();
   }
 
+  function toggleTheme() {
+    setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+  }
+
   return (
     <div className="app-shell">
       <Sidebar
@@ -116,15 +75,13 @@ function MainApp() {
       />
 
       <div className="app-main">
-        {/* Hana tetap muncul di halaman Ringkasan */}
         {page === 'overview' && <MascotHost mascot={mascot} onChange={updateMascot} />}
 
-        {/* Live wallpaper tetap aktif pada semua tema */}
         <WallpaperLayer palette={palette} wallpaper={wallpaper} />
 
         <Topbar
           theme={theme}
-          onTheme={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+          onTheme={toggleTheme}
           onMenu={() => setMenuOpen(true)}
           refresh={refreshAll}
           loading={github.loading || codex.loading}
@@ -184,7 +141,7 @@ function MainApp() {
               username={username}
               onUsername={setUsername}
               theme={theme}
-              onTheme={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+              onTheme={toggleTheme}
               onCodexRefresh={() => void codex.refresh()}
             />
           )}
