@@ -96,16 +96,16 @@ export default function Settings({
   useEffect(() => setDraft(username), [username])
 
   function save() {
-  const value = draft.trim()
+    const value = draft.trim()
 
-  if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(value)) {
-    setNotice('Username tidak valid.')
-    return
+    if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(value)) {
+      setNotice('Username tidak valid.')
+      return
+    }
+
+    onUsername(value)
+    setNotice('Tersimpan')
   }
-
-  onUsername(value)
-  setNotice('Tersimpan')
-}
 
   return (
     <>
