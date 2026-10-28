@@ -1,12 +1,19 @@
 use git2::{Repository, Sort, Status, StatusOptions};
 use serde::Serialize;
 use std::io::Write;
+use std::io::{Read, Seek, SeekFrom};
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::process::Stdio;
+use std::thread;
+use std::time::{Duration, Instant};
 
 const MAX_FILES: usize = 100;
 const MAX_COMMITS: usize = 20;
 const MAX_NOTES_BYTES: usize = 96_000;
+const GIT_CLIFF_TIMEOUT: Duration = Duration::from_secs(30);
+const MAX_ERROR_BYTES: usize = 4_096;
+const PROCESS_POLL_INTERVAL: Duration = Duration::from_millis(50);
 
 #[derive(Debug, Serialize)]
 pub struct ChangedFile {
@@ -162,20 +169,35 @@ pub async fn generate_release_notes(path: String) -> Result<String, String> {
 
 fn build_release_notes(path: &str) -> Result<String, String> {
     let (repo, workdir) = open_selected_repo(path)?;
+
     if repo.is_empty().map_err(|error| error.to_string())? {
         return Err("Repository belum memiliki commit untuk dibuatkan release notes.".to_string());
     }
+
     let mut config = tempfile::Builder::new()
         .suffix(".toml")
         .tempfile()
         .map_err(|error| format!("Tidak bisa membuat konfigurasi sementara: {error}"))?;
+
     config
         .write_all(include_str!("git_tools_cliff.toml").as_bytes())
         .map_err(|error| format!("Tidak bisa menulis konfigurasi sementara: {error}"))?;
 
-    // CLI arguments are passed directly (no cmd.exe / PowerShell interpolation).
-    // No -o/--output: git-cliff writes the preview to stdout only.
-    let output = Command::new("git-cliff")
+    let mut stdout_file = tempfile::tempfile()
+        .map_err(|error| format!("Tidak bisa membuat output sementara: {error}"))?;
+
+    let mut stderr_file = tempfile::tempfile()
+        .map_err(|error| format!("Tidak bisa membuat error log sementara: {error}"))?;
+
+    let stdout = stdout_file
+        .try_clone()
+        .map_err(|error| format!("Tidak bisa menyiapkan stdout: {error}"))?;
+
+    let stderr = stderr_file
+        .try_clone()
+        .map_err(|error| format!("Tidak bisa menyiapkan stderr: {error}"))?;
+
+    let mut child = Command::new("git-cliff")
         .arg("--config")
         .arg(config.path())
         .arg("--repository")
@@ -185,29 +207,100 @@ fn build_release_notes(path: &str) -> Result<String, String> {
         .env_remove("GIT_CLIFF_OUTPUT")
         .env_remove("GIT_CLIFF_PREPEND")
         .current_dir(&workdir)
-        .output()
+        .stdin(Stdio::null())
+        .stdout(Stdio::from(stdout))
+        .stderr(Stdio::from(stderr))
+        .spawn()
         .map_err(|error| {
             if error.kind() == std::io::ErrorKind::NotFound {
-                "git-cliff belum terinstal. Jalankan `cargo install git-cliff --locked`, lalu restart terminal/aplikasi.".to_owned()
+                "git-cliff belum terinstal. Jalankan `cargo install git-cliff --locked`, lalu restart aplikasi.".to_owned()
             } else {
                 format!("Tidak bisa menjalankan git-cliff: {error}")
             }
         })?;
-    if !output.status.success() {
-        let stderr = String::from_utf8_lossy(&output.stderr);
-        return Err(format!(
-            "git-cliff gagal: {}",
-            stderr.trim().chars().take(500).collect::<String>()
-        ));
+
+    let started = Instant::now();
+
+    let status = loop {
+        let status = match child.try_wait() {
+            Ok(status) => status,
+            Err(error) => {
+                let _ = child.kill();
+                let _ = child.wait();
+                return Err(format!("Gagal memeriksa proses git-cliff: {error}"));
+            }
+        };
+
+        let stdout_size = stdout_file.metadata().map(|metadata| metadata.len());
+        let stderr_size = stderr_file.metadata().map(|metadata| metadata.len());
+
+        let (stdout_size, stderr_size) = match (stdout_size, stderr_size) {
+            (Ok(stdout_size), Ok(stderr_size)) => (stdout_size, stderr_size),
+            _ => {
+                let _ = child.kill();
+                let _ = child.wait();
+                return Err("Tidak bisa memeriksa ukuran output git-cliff.".to_owned());
+            }
+        };
+
+        if stdout_size > MAX_NOTES_BYTES as u64 || stderr_size > MAX_ERROR_BYTES as u64 {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err("Output git-cliff melewati batas pratinjau.".to_owned());
+        }
+
+        if let Some(status) = status {
+            break status;
+        }
+
+        if started.elapsed() >= GIT_CLIFF_TIMEOUT {
+            let _ = child.kill();
+            let _ = child.wait();
+            return Err("Proses git-cliff melewati batas waktu 30 detik.".to_owned());
+        }
+
+        thread::sleep(PROCESS_POLL_INTERVAL);
+    };
+
+    if !status.success() {
+        stderr_file
+            .seek(SeekFrom::Start(0))
+            .map_err(|error| format!("Tidak bisa membaca error log: {error}"))?;
+
+        let mut error_bytes = Vec::new();
+
+        stderr_file
+            .take(MAX_ERROR_BYTES as u64)
+            .read_to_end(&mut error_bytes)
+            .map_err(|error| format!("Tidak bisa membaca error git-cliff: {error}"))?;
+
+        let message = String::from_utf8_lossy(&error_bytes);
+
+        return Err(format!("git-cliff gagal: {}", message.trim()));
     }
-    let notes = String::from_utf8(output.stdout)
-        .map_err(|_| "Output git-cliff bukan UTF-8 yang valid.".to_string())?;
+
+    stdout_file
+        .seek(SeekFrom::Start(0))
+        .map_err(|error| format!("Tidak bisa membaca release notes: {error}"))?;
+
+    let mut output = Vec::new();
+
+    stdout_file
+        .take(MAX_NOTES_BYTES as u64 + 1)
+        .read_to_end(&mut output)
+        .map_err(|error| format!("Gagal membaca release notes: {error}"))?;
+
+    if output.len() > MAX_NOTES_BYTES {
+        return Err("Release notes terlalu panjang untuk pratinjau.".to_owned());
+    }
+
+    let notes = String::from_utf8(output)
+        .map_err(|_| "Output git-cliff bukan UTF-8 yang valid.".to_owned())?;
+
     if notes.trim().is_empty() {
-        return Err("git-cliff tidak menghasilkan catatan rilis untuk histori ini.".to_string());
+        return Err("git-cliff tidak menghasilkan catatan rilis untuk histori ini.".to_owned());
     }
-    if notes.len() > MAX_NOTES_BYTES {
-        return Err("Release notes terlalu panjang untuk pratinjau. Gunakan git-cliff CLI untuk ekspor penuh.".to_string());
-    }
+
     Ok(notes)
 }
 
