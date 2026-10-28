@@ -15,6 +15,22 @@ const GIT_CLIFF_TIMEOUT: Duration = Duration::from_secs(30);
 const MAX_ERROR_BYTES: usize = 4_096;
 const PROCESS_POLL_INTERVAL: Duration = Duration::from_millis(50);
 
+fn check_process_limits(
+    elapsed: Duration,
+    stdout_bytes: u64,
+    stderr_bytes: u64,
+) -> Result<(), &'static str> {
+    if stdout_bytes > MAX_NOTES_BYTES as u64 || stderr_bytes > MAX_ERROR_BYTES as u64 {
+        return Err("Output git-cliff melewati batas pratinjau.");
+    }
+
+    if elapsed >= GIT_CLIFF_TIMEOUT {
+        return Err("Proses git-cliff melewati batas waktu 30 detik.");
+    }
+
+    Ok(())
+}
+
 #[derive(Debug, Serialize)]
 pub struct ChangedFile {
     path: String,
@@ -243,20 +259,14 @@ fn build_release_notes(path: &str) -> Result<String, String> {
             }
         };
 
-        if stdout_size > MAX_NOTES_BYTES as u64 || stderr_size > MAX_ERROR_BYTES as u64 {
+        if let Err(message) = check_process_limits(started.elapsed(), stdout_size, stderr_size) {
             let _ = child.kill();
             let _ = child.wait();
-            return Err("Output git-cliff melewati batas pratinjau.".to_owned());
+            return Err(message.to_owned());
         }
 
         if let Some(status) = status {
             break status;
-        }
-
-        if started.elapsed() >= GIT_CLIFF_TIMEOUT {
-            let _ = child.kill();
-            let _ = child.wait();
-            return Err("Proses git-cliff melewati batas waktu 30 detik.".to_owned());
         }
 
         thread::sleep(PROCESS_POLL_INTERVAL);
@@ -307,6 +317,30 @@ fn build_release_notes(path: &str) -> Result<String, String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn process_within_limits_is_allowed() {
+        let result = check_process_limits(Duration::from_secs(5), 1_024, 512);
+
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn process_exceeding_timeout_is_rejected() {
+        let result = check_process_limits(Duration::from_secs(31), 1_024, 512);
+
+        assert_eq!(
+            result,
+            Err("Proses git-cliff melewati batas waktu 30 detik.")
+        );
+    }
+
+    #[test]
+    fn process_exceeding_output_limit_is_rejected() {
+        let result = check_process_limits(Duration::from_secs(5), MAX_NOTES_BYTES as u64 + 1, 512);
+
+        assert_eq!(result, Err("Output git-cliff melewati batas pratinjau."));
+    }
 
     #[test]
     fn status_priority_handles_conflicts_and_untracked_files() {
