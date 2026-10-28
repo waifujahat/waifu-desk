@@ -1,7 +1,7 @@
-import { MascotHost } from './features/appearance/components/MascotHost' // wd-hana-mascot-v1
+import { MascotHost } from './features/appearance/components/MascotHost'
 import { useMascot } from './features/appearance/hooks/useMascot'
-import { WallpaperLayer, useAppearance } from './features/appearance' // wd-anime-edition-stages-1-2
-import { readAnimePalette, type AnimePalette } from './design-system/animeTheme' // wd-anime-theme-installed
+import { WallpaperLayer, useAppearance } from './features/appearance'
+import { readAnimePalette, type AnimePalette } from './design-system/animeTheme'
 import { useEffect, useState } from 'react'
 import { BrainCircuit, RefreshCw } from 'lucide-react'
 import type { Page, Theme } from './types'

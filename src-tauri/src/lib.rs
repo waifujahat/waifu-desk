@@ -1,4 +1,5 @@
 mod codex_directory;
+mod git_tools;
 mod usage;
 
 use tauri::{AppHandle, Manager, WebviewUrl, WebviewWindowBuilder};
@@ -61,7 +62,9 @@ pub fn run() {
             get_codex_directory,
             set_codex_directory,
             reset_codex_directory,
-            toggle_compact_window
+            toggle_compact_window,
+            git_tools::inspect_local_repository,
+            git_tools::generate_release_notes
         ])
         .run(tauri::generate_context!())
         .expect("error running WaifuDesk");

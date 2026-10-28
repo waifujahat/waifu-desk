@@ -8,6 +8,7 @@ import { compact, relative } from '../lib/format'
 import { openTrusted } from '../lib/desktop'
 import { Badge } from '../design-system/components/Badge'
 import { Button } from '../design-system/components/Button'
+import { LocalGitPanel } from '../features/local-git'
 
 type Sort = 'recent' | 'name' | 'stars' | 'forks'
 
@@ -55,7 +56,7 @@ export default function Repositories({ repos, loading, warnings, error, onRetry 
       ? 'Repositori belum dapat dimuat'
       : activeFilters
         ? 'Tidak ada hasil'
-        : 'Belum ada repositori'
+        : 'Belum ada repository'
   const reset = () => {
     setQuery('')
     setLanguage('all')
@@ -68,6 +69,7 @@ export default function Repositories({ repos, loading, warnings, error, onRetry 
         title="Repositori"
         actions={repos.length > 0 ? <Badge>{filtered.length} repositori</Badge> : undefined}
       />
+      <LocalGitPanel />
       <GitHubNotice warnings={warnings} error={error} onRetry={onRetry} loading={loading} />
       {repos.length > 0 && (
         <div className="filter-panel">
@@ -75,8 +77,8 @@ export default function Repositories({ repos, loading, warnings, error, onRetry 
             <label className="search-field">
               <Search size={18} />
               <input
-                aria-label="Cari repositori"
-                placeholder="Cari repositori…"
+                aria-label="Cari repository"
+                placeholder="Cari repository"
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
               />
