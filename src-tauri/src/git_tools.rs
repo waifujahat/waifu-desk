@@ -1,6 +1,3 @@
-//! Local Git read-only inspection and git-cliff release note previews.
-//! Never stages, commits, resets, pushes, or writes into the selected repository.
-
 use git2::{Repository, Sort, Status, StatusOptions};
 use serde::Serialize;
 use std::io::Write;
@@ -75,8 +72,14 @@ fn status_name(status: Status) -> &'static str {
 }
 
 #[tauri::command]
-pub fn inspect_local_repository(path: String) -> Result<LocalGitSnapshot, String> {
-    let (repo, workdir) = open_selected_repo(&path)?;
+pub async fn inspect_local_repository(path: String) -> Result<LocalGitSnapshot, String> {
+    tauri::async_runtime::spawn_blocking(move || inspect_repository(&path))
+        .await
+        .map_err(|error| format!("Gagal menjalankan pemeriksaan Git: {error}"))?
+}
+
+fn inspect_repository(path: &str) -> Result<LocalGitSnapshot, String> {
+    let (repo, workdir) = open_selected_repo(path)?;
     let branch = repo
         .head()
         .ok()
@@ -151,8 +154,14 @@ pub fn inspect_local_repository(path: String) -> Result<LocalGitSnapshot, String
 }
 
 #[tauri::command]
-pub fn generate_release_notes(path: String) -> Result<String, String> {
-    let (repo, workdir) = open_selected_repo(&path)?;
+pub async fn generate_release_notes(path: String) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || build_release_notes(&path))
+        .await
+        .map_err(|error| format!("Gagal menjalankan git-cliff: {error}"))?
+}
+
+fn build_release_notes(path: &str) -> Result<String, String> {
+    let (repo, workdir) = open_selected_repo(path)?;
     if repo.is_empty().map_err(|error| error.to_string())? {
         return Err("Repository belum memiliki commit untuk dibuatkan release notes.".to_string());
     }
