@@ -108,4 +108,44 @@ mod tests {
 
         assert_eq!(count, 6);
     }
+
+    #[tokio::test]
+    async fn migrations_seed_roles_and_permissions() {
+        let options = SqliteConnectOptions::new()
+            .in_memory(true)
+            .foreign_keys(true);
+
+        let pool = SqlitePoolOptions::new()
+            .max_connections(1)
+            .connect_with(options)
+            .await
+            .expect("Gagal membuat database pengujian");
+
+        sqlx::migrate!("./migrations")
+            .run(&pool)
+            .await
+            .expect("Migrasi RBAC gagal");
+
+        let expected = [("Admin", 5_i64), ("Operator", 3_i64), ("Viewer", 1_i64)];
+
+        for (role, expected_count) in expected {
+            let actual_count: i64 = sqlx::query_scalar(
+                r#"
+                SELECT COUNT(*)
+                FROM role_permissions rp
+                JOIN roles r ON r.id = rp.role_id
+                WHERE r.name = ?
+                "#,
+            )
+            .bind(role)
+            .fetch_one(&pool)
+            .await
+            .expect("Gagal membaca permission");
+
+            assert_eq!(
+                actual_count, expected_count,
+                "Jumlah permission untuk role {role} tidak sesuai"
+            );
+        }
+    }
 }
