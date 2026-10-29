@@ -193,7 +193,7 @@ export default function Settings({
             >
               <WaifuMark />
               <strong>Classic</strong>
-              <small>Minimal, netral</small>
+              <small>Ungu</small>
             </button>
             <button
               type="button"
@@ -203,7 +203,7 @@ export default function Settings({
             >
               <SakuraIcon />
               <strong>Sakura</strong>
-              <small>Pink lembut</small>
+              <small>Pink</small>
             </button>
             <button
               type="button"
@@ -213,7 +213,7 @@ export default function Settings({
             >
               <TsukiIcon />
               <strong>Tsuki</strong>
-              <small>Biru malam</small>
+              <small>Biru</small>
             </button>
           </div>
         </section>
