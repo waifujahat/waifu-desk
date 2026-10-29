@@ -1,3 +1,5 @@
+import { invoke, isTauri } from '@tauri-apps/api/core';
+
 export interface AuthProfile {
   id: number;
   email: string;
@@ -36,10 +38,72 @@ export class AuthApiError extends Error {
   }
 }
 
+
 async function apiRequest<T>(
   path: string,
   options: RequestInit = {},
 ): Promise<T> {
+  // Aplikasi Tauri menggunakan Rust IPC.
+  if (isTauri()) {
+    const headers = new Headers(options.headers);
+
+    const authorization =
+      headers.get('Authorization');
+
+    const token = authorization?.startsWith('Bearer ')
+      ? authorization.slice(7)
+      : null;
+
+    let body: unknown = null;
+
+    if (typeof options.body === 'string') {
+      body = JSON.parse(options.body);
+    }
+
+    let result: {
+      status: number;
+      body: unknown;
+    };
+
+    try {
+      result = await invoke(
+        'auth_api_request',
+        {
+          method: (options.method ?? 'GET').toUpperCase(),
+          path,
+          body,
+          token,
+        },
+      );
+    } catch (error) {
+      throw new Error(
+        typeof error === 'string'
+          ? error
+          : 'Tidak dapat terhubung ke Rust API.',
+      );
+    }
+
+    if (result.status < 200 || result.status >= 300) {
+      const responseBody = result.body;
+
+      const message =
+        responseBody !== null &&
+        typeof responseBody === 'object' &&
+        'error' in responseBody &&
+        typeof responseBody.error === 'string'
+          ? responseBody.error
+          : `Permintaan gagal (HTTP ${result.status})`;
+
+      throw new AuthApiError(result.status, message);
+    }
+
+    if (result.status === 204) {
+      return undefined as T;
+    }
+
+    return result.body as T;
+  }
+
   let response: Response;
 
   try {
@@ -49,7 +113,7 @@ async function apiRequest<T>(
     });
   } catch {
     throw new Error(
-      'Tidak dapat terhubung ke WaifuDesk API. Pastikan backend Rust berjalan.',
+      'Tidak dapat terhubung ke WaifuDesk API.',
     );
   }
 
@@ -68,7 +132,6 @@ async function apiRequest<T>(
         message = body.error;
       }
     } catch {
-      // Gunakan pesan default jika response bukan JSON.
     }
 
     throw new AuthApiError(response.status, message);

@@ -67,7 +67,7 @@ export default function LoginPage({
         setMode('login');
         setPassword('');
         setSuccess(
-          'Akun berhasil dibuat. Silakan login.',
+          'Akun berhasil dibuat',
         );
 
         return;

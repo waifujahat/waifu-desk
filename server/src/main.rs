@@ -1,13 +1,16 @@
 mod auth;
+
 #[cfg(test)]
 mod http_tests;
 
-use std::path::PathBuf;
+use std::{ffi::OsStr, path::PathBuf};
 
 use axum::{
     Json, Router,
-    extract::State,
+    extract::{Request, State},
     http::StatusCode,
+    middleware::{self, Next},
+    response::{IntoResponse, Response},
     routing::{get, post},
 };
 use serde::Serialize;
@@ -56,9 +59,29 @@ async fn database_check(
     Ok(Json(DatabaseResponse { status: "ok" }))
 }
 
+async fn sidecar_auth(State(secret): State<String>, request: Request, next: Next) -> Response {
+    let provided = request
+        .headers()
+        .get("x-waifudesk-bridge-key")
+        .and_then(|value| value.to_str().ok());
+
+    if provided != Some(secret.as_str()) {
+        return StatusCode::UNAUTHORIZED.into_response();
+    }
+
+    next.run(request).await
+}
+
 fn create_app(state: AppState) -> Router {
-    Router::new()
-        // Health
+    let secret = std::env::var("WAIFUDESK_API_SECRET")
+        .ok()
+        .filter(|value| !value.is_empty());
+
+    create_app_with_secret(state, secret)
+}
+
+fn create_app_with_secret(state: AppState, secret: Option<String>) -> Router {
+    let router = Router::new()
         .route("/api/health", get(health_check))
         .route("/api/health/database", get(database_check))
         .route("/api/auth/register", post(auth::handlers::register))
@@ -66,14 +89,37 @@ fn create_app(state: AppState) -> Router {
         .route("/api/auth/me", get(auth::handlers::me))
         .route("/api/auth/logout", post(auth::handlers::logout))
         .route("/api/users", get(auth::handlers::list_users))
-        .with_state(state)
+        .with_state(state);
+
+    match secret {
+        Some(secret) => router.layer(middleware::from_fn_with_state(secret, sidecar_auth)),
+        None => router,
+    }
+}
+
+fn select_database_path(configured_path: Option<&OsStr>) -> PathBuf {
+    match configured_path {
+        Some(path) if !path.is_empty() => PathBuf::from(path),
+
+        _ => PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("waifudesk.db"),
+    }
+}
+
+fn database_path() -> PathBuf {
+    let configured = std::env::var_os("WAIFUDESK_DATABASE_PATH");
+
+    select_database_path(configured.as_deref())
 }
 
 async fn initialize_database() -> Result<SqlitePool, Box<dyn std::error::Error>> {
-    let database_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("waifudesk.db");
+    let path = database_path();
+
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent)?;
+    }
 
     let options = SqliteConnectOptions::new()
-        .filename(database_path)
+        .filename(path)
         .create_if_missing(true)
         .foreign_keys(true);
 
@@ -82,6 +128,7 @@ async fn initialize_database() -> Result<SqlitePool, Box<dyn std::error::Error>>
         .connect_with(options)
         .await?;
 
+    // Migrasi otomatis saat server dimulai.
     sqlx::migrate!("./migrations").run(&pool).await?;
 
     Ok(pool)
@@ -89,12 +136,11 @@ async fn initialize_database() -> Result<SqlitePool, Box<dyn std::error::Error>>
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // Database harus siap sebelum API menerima request.
     let database = initialize_database().await?;
 
     let state = AppState { db: database };
 
-    // Backend masih berjalan secara lokal.
+    // Tetap lokal selama tahap pengembangan.
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3001").await?;
 
     println!("WaifuDesk API: http://127.0.0.1:3001");
@@ -126,6 +172,25 @@ mod tests {
             .expect("Migrasi database gagal");
 
         pool
+    }
+
+    #[test]
+    fn database_path_defaults_to_project_directory() {
+        let expected = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("waifudesk.db");
+
+        assert_eq!(select_database_path(None), expected);
+    }
+
+    #[test]
+    fn database_path_accepts_desktop_directory() {
+        let custom_path = std::env::temp_dir()
+            .join("WaifuDeskTest")
+            .join("waifudesk.db");
+
+        assert_eq!(
+            select_database_path(Some(custom_path.as_os_str())),
+            custom_path
+        );
     }
 
     #[tokio::test]

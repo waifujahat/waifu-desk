@@ -24,3 +24,6 @@ dirs = "6"
 walkdir = "2"
 git2 = "0.21"
 tempfile = "3"
+tauri-plugin-shell = "2"
+reqwest = { version = "0.13", default-features = false, features = ["json"] }
+rand = "0.10"
