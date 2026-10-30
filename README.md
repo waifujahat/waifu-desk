@@ -12,6 +12,8 @@ By Nurwidhi Maulana Nugraha
 
 **Live Demo :** https://waifujahat.github.io/waifu-desk/
 
+**Download :** https://github.com/waifujahat/waifu-desk/releases/tag/v0.1.0-beta.1
+
 **Repository :** https://github.com/waifujahat/waifu-desk
 
 **Development Branch :** [feature/fullstack](https://github.com/waifujahat/waifu-desk/tree/feature/fullstack)
