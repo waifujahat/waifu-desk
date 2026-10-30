@@ -2,7 +2,7 @@ import {
   filterRepositories,
   getRepositoryLanguages,
   type RepositorySort,
-} from '../features/github/domain/repositoryFilters';
+} from '../features/github';
 import { Search, X } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import type { GitHubRepo } from '../types';

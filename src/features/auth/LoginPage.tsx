@@ -1,12 +1,7 @@
-
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 
-import {
-  getMyProfile,
-  loginAccount,
-  registerAccount,
-} from './api';
+import { getMyProfile, loginAccount, registerAccount } from './api';
 import type { AuthSession } from './api';
 
 import './auth.css';
@@ -17,9 +12,7 @@ interface LoginPageProps {
 
 type AuthMode = 'login' | 'register';
 
-export default function LoginPage({
-  onAuthenticated,
-}: LoginPageProps) {
+export default function LoginPage({ onAuthenticated }: LoginPageProps) {
   const [mode, setMode] = useState<AuthMode>('login');
 
   const [email, setEmail] = useState('');
@@ -39,9 +32,7 @@ export default function LoginPage({
     setPassword('');
   }
 
-  async function handleSubmit(
-    event: FormEvent<HTMLFormElement>,
-  ) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (loading) return;
@@ -53,9 +44,7 @@ export default function LoginPage({
     try {
       if (isRegister) {
         if (password.length < 12) {
-          throw new Error(
-            'Password minimal 12 karakter.',
-          );
+          throw new Error('Password minimal 12 karakter.');
         }
 
         await registerAccount({
@@ -66,17 +55,12 @@ export default function LoginPage({
 
         setMode('login');
         setPassword('');
-        setSuccess(
-          'Akun berhasil dibuat',
-        );
+        setSuccess('Akun berhasil dibuat');
 
         return;
       }
 
-      const result = await loginAccount(
-        email.trim(),
-        password,
-      );
+      const result = await loginAccount(email.trim(), password);
 
       // Pastikan token benar-benar dapat
       // digunakan untuk mengambil profil.
@@ -87,11 +71,7 @@ export default function LoginPage({
         profile,
       });
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Terjadi kesalahan. Silakan coba lagi.',
-      );
+      setError(err instanceof Error ? err.message : 'Terjadi kesalahan. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }
@@ -107,9 +87,7 @@ export default function LoginPage({
           </div>
 
           <div className="wd-auth-intro-content">
-            <span className="wd-auth-eyebrow">
-              SATU TEMPAT UNTUK DEVELOPER
-            </span>
+            <span className="wd-auth-eyebrow">SATU TEMPAT UNTUK DEVELOPER</span>
 
             <h1>
               WAIFU
@@ -117,29 +95,17 @@ export default function LoginPage({
             </h1>
           </div>
 
-          <div className="wd-auth-intro-footer">
-            React · TypeScript · Tauri · Rust
-          </div>
+          <div className="wd-auth-intro-footer">React · TypeScript · Tauri · Rust</div>
         </section>
 
         <section className="wd-auth-panel">
           <div className="wd-auth-card">
-            <div className="wd-auth-mobile-brand">
-              WaifuDesk
-            </div>
+            <div className="wd-auth-mobile-brand">WaifuDesk</div>
 
             <div className="wd-auth-card-heading">
-              <span className="wd-auth-eyebrow">
-                {isRegister
-                  ? 'BUAT AKUN'
-                  : 'SELAMAT DATANG'}
-              </span>
+              <span className="wd-auth-eyebrow">{isRegister ? 'BUAT AKUN' : 'SELAMAT DATANG'}</span>
 
-              <h2>
-                {isRegister
-                  ? 'Daftar WaifuDesk'
-                  : 'Masuk ke WaifuDesk'}
-              </h2>
+              <h2>{isRegister ? 'Daftar WaifuDesk' : 'Masuk ke WaifuDesk'}</h2>
 
               <p>
                 {isRegister
@@ -160,9 +126,7 @@ export default function LoginPage({
                   <input
                     type="text"
                     value={displayName}
-                    onChange={(event) =>
-                      setDisplayName(event.target.value)
-                    }
+                    onChange={(event) => setDisplayName(event.target.value)}
                     maxLength={100}
                     autoComplete="name"
                     placeholder="Nama pengguna"
@@ -177,9 +141,7 @@ export default function LoginPage({
                 <input
                   type="email"
                   value={email}
-                  onChange={(event) =>
-                    setEmail(event.target.value)
-                  }
+                  onChange={(event) => setEmail(event.target.value)}
                   maxLength={254}
                   autoComplete="username"
                   placeholder="nama@example.com"
@@ -193,73 +155,41 @@ export default function LoginPage({
                 <input
                   type="password"
                   value={password}
-                  onChange={(event) =>
-                    setPassword(event.target.value)
-                  }
+                  onChange={(event) => setPassword(event.target.value)}
                   minLength={isRegister ? 12 : undefined}
                   maxLength={128}
-                  autoComplete={
-                    isRegister
-                      ? 'new-password'
-                      : 'current-password'
-                  }
+                  autoComplete={isRegister ? 'new-password' : 'current-password'}
                   placeholder="Masukkan password"
                   required
                   disabled={loading}
                 />
               </label>
 
-              {isRegister && (
-                <p className="wd-auth-hint">
-                  Gunakan password minimal 12 karakter
-                </p>
-              )}
+              {isRegister && <p className="wd-auth-hint">Gunakan password minimal 12 karakter</p>}
 
               {error && (
-                <p
-                  className="wd-auth-message wd-auth-error"
-                  role="alert"
-                >
+                <p className="wd-auth-message wd-auth-error" role="alert">
                   {error}
                 </p>
               )}
 
               {success && (
-                <p
-                  className="wd-auth-message wd-auth-success"
-                  role="status"
-                >
+                <p className="wd-auth-message wd-auth-success" role="status">
                   {success}
                 </p>
               )}
 
-              <button
-                className="wd-auth-submit"
-                type="submit"
-                disabled={loading}
-              >
-                {loading
-                  ? 'Memproses...'
-                  : isRegister
-                    ? 'Buat Akun'
-                    : 'Masuk'}
+              <button className="wd-auth-submit" type="submit" disabled={loading}>
+                {loading ? 'Memproses...' : isRegister ? 'Buat Akun' : 'Masuk'}
               </button>
             </form>
 
             <div className="wd-auth-switch">
-              <span>
-                {isRegister
-                  ? 'Sudah punya akun?'
-                  : 'Belum punya akun?'}
-              </span>
+              <span>{isRegister ? 'Sudah punya akun?' : 'Belum punya akun?'}</span>
 
               <button
                 type="button"
-                onClick={() =>
-                  changeMode(
-                    isRegister ? 'login' : 'register',
-                  )
-                }
+                onClick={() => changeMode(isRegister ? 'login' : 'register')}
                 disabled={loading}
               >
                 {isRegister ? 'Masuk' : 'Daftar'}

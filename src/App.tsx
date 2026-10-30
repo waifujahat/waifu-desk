@@ -24,21 +24,11 @@ import { useAppPreferences } from './hooks/useAppPreferences';
 
 import LoginPage from './features/auth/LoginPage';
 import { logoutAccount } from './features/auth/api';
-import type {
-  AuthProfile,
-  AuthSession,
-} from './features/auth/api';
+import type { AuthProfile, AuthSession } from './features/auth/api';
 
-const PAGES: Page[] = [
-  'overview',
-  'ai',
-  'repositories',
-  'activity',
-  'settings',
-];
+const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings'];
 
-const isPage = (value: string): value is Page =>
-  PAGES.includes(value as Page);
+const isPage = (value: string): value is Page => PAGES.includes(value as Page);
 
 interface MainAppProps {
   account: AuthProfile;
@@ -51,24 +41,12 @@ interface MainAppProps {
 // MAIN DASHBOARD
 // ==========================================
 
-function MainApp({
-  account,
-  onLogout,
-  logoutBusy,
-  logoutError,
-}: MainAppProps) {
+function MainApp({ account, onLogout, logoutBusy, logoutError }: MainAppProps) {
   const { mascot, updateMascot } = useMascot();
 
   const { wallpaper, updateWallpaper } = useAppearance();
 
-  const {
-    username,
-    setUsername,
-    theme,
-    setTheme,
-    palette,
-    setPalette,
-  } = useAppPreferences();
+  const { username, setUsername, theme, setTheme, palette, setPalette } = useAppPreferences();
 
   const [page, setPage] = useState<Page>(() => {
     const hash = location.hash.slice(1);
@@ -114,9 +92,7 @@ function MainApp({
   }
 
   function toggleTheme() {
-    setTheme((current) =>
-      current === 'dark' ? 'light' : 'dark',
-    );
+    setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
   }
 
   return (
@@ -130,17 +106,9 @@ function MainApp({
       />
 
       <div className="app-main">
-        {page === 'overview' && (
-          <MascotHost
-            mascot={mascot}
-            onChange={updateMascot}
-          />
-        )}
+        {page === 'overview' && <MascotHost mascot={mascot} onChange={updateMascot} />}
 
-        <WallpaperLayer
-          palette={palette}
-          wallpaper={wallpaper}
-        />
+        <WallpaperLayer palette={palette} wallpaper={wallpaper} />
 
         <Topbar
           theme={theme}
@@ -165,10 +133,7 @@ function MainApp({
           </button>
 
           {logoutError && (
-            <span
-              className="wd-accountbar-error"
-              role="alert"
-            >
+            <span className="wd-accountbar-error" role="alert">
               {logoutError}
             </span>
           )}
@@ -183,9 +148,7 @@ function MainApp({
               codex={codex.data}
               codexLoading={codex.loading}
               codexError={codex.error}
-              onRefreshGitHub={() =>
-                void github.refresh(true)
-              }
+              onRefreshGitHub={() => void github.refresh(true)}
               onPage={navigate}
               desktop={codex.desktop}
             />
@@ -207,9 +170,7 @@ function MainApp({
               loading={github.loading}
               warnings={github.data.warnings}
               error={github.error}
-              onRetry={() =>
-                void github.refresh(true)
-              }
+              onRetry={() => void github.refresh(true)}
             />
           )}
 
@@ -219,9 +180,7 @@ function MainApp({
               loading={github.loading}
               warnings={github.data.warnings}
               error={github.error}
-              onRetry={() =>
-                void github.refresh(true)
-              }
+              onRetry={() => void github.refresh(true)}
             />
           )}
 
@@ -235,9 +194,7 @@ function MainApp({
               onUsername={setUsername}
               theme={theme}
               onTheme={toggleTheme}
-              onCodexRefresh={() =>
-                void codex.refresh()
-              }
+              onCodexRefresh={() => void codex.refresh()}
             />
           )}
         </main>
@@ -252,15 +209,12 @@ function MainApp({
 
 export default function App() {
   // Token sengaja hanya disimpan di memori.
-  const [session, setSession] =
-    useState<AuthSession | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(null);
 
   const [logoutBusy, setLogoutBusy] = useState(false);
   const [logoutError, setLogoutError] = useState('');
 
-  const isWidget =
-    new URLSearchParams(location.search).get('widget') === '1' &&
-    desktopAvailable();
+  const isWidget = new URLSearchParams(location.search).get('widget') === '1' && desktopAvailable();
 
   async function handleLogout() {
     if (!session || logoutBusy) return;
@@ -273,11 +227,7 @@ export default function App() {
 
       setSession(null);
     } catch (error) {
-      setLogoutError(
-        error instanceof Error
-          ? error.message
-          : 'Logout gagal. Silakan coba lagi.',
-      );
+      setLogoutError(error instanceof Error ? error.message : 'Logout gagal. Silakan coba lagi.');
     } finally {
       setLogoutBusy(false);
     }

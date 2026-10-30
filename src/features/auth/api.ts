@@ -38,21 +38,14 @@ export class AuthApiError extends Error {
   }
 }
 
-
-async function apiRequest<T>(
-  path: string,
-  options: RequestInit = {},
-): Promise<T> {
+async function apiRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   // Aplikasi Tauri menggunakan Rust IPC.
   if (isTauri()) {
     const headers = new Headers(options.headers);
 
-    const authorization =
-      headers.get('Authorization');
+    const authorization = headers.get('Authorization');
 
-    const token = authorization?.startsWith('Bearer ')
-      ? authorization.slice(7)
-      : null;
+    const token = authorization?.startsWith('Bearer ') ? authorization.slice(7) : null;
 
     let body: unknown = null;
 
@@ -66,21 +59,14 @@ async function apiRequest<T>(
     };
 
     try {
-      result = await invoke(
-        'auth_api_request',
-        {
-          method: (options.method ?? 'GET').toUpperCase(),
-          path,
-          body,
-          token,
-        },
-      );
+      result = await invoke('auth_api_request', {
+        method: (options.method ?? 'GET').toUpperCase(),
+        path,
+        body,
+        token,
+      });
     } catch (error) {
-      throw new Error(
-        typeof error === 'string'
-          ? error
-          : 'Tidak dapat terhubung ke Rust API.',
-      );
+      throw new Error(typeof error === 'string' ? error : 'Tidak dapat terhubung ke Rust API.');
     }
 
     if (result.status < 200 || result.status >= 300) {
@@ -112,9 +98,7 @@ async function apiRequest<T>(
       ...options,
     });
   } catch {
-    throw new Error(
-      'Tidak dapat terhubung ke WaifuDesk API.',
-    );
+    throw new Error('Tidak dapat terhubung ke WaifuDesk API.');
   }
 
   if (!response.ok) {
@@ -132,6 +116,7 @@ async function apiRequest<T>(
         message = body.error;
       }
     } catch {
+      // Error default jika bukan JSON
     }
 
     throw new AuthApiError(response.status, message);
@@ -144,9 +129,7 @@ async function apiRequest<T>(
   return (await response.json()) as T;
 }
 
-export function registerAccount(
-  payload: RegisterPayload,
-): Promise<RegisterResponse> {
+export function registerAccount(payload: RegisterPayload): Promise<RegisterResponse> {
   return apiRequest('/auth/register', {
     method: 'POST',
     headers: {
@@ -156,10 +139,7 @@ export function registerAccount(
   });
 }
 
-export function loginAccount(
-  email: string,
-  password: string,
-): Promise<LoginResponse> {
+export function loginAccount(email: string, password: string): Promise<LoginResponse> {
   return apiRequest('/auth/login', {
     method: 'POST',
     headers: {
@@ -169,9 +149,7 @@ export function loginAccount(
   });
 }
 
-export function getMyProfile(
-  token: string,
-): Promise<AuthProfile> {
+export function getMyProfile(token: string): Promise<AuthProfile> {
   return apiRequest('/auth/me', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -179,9 +157,7 @@ export function getMyProfile(
   });
 }
 
-export function logoutAccount(
-  token: string,
-): Promise<void> {
+export function logoutAccount(token: string): Promise<void> {
   return apiRequest('/auth/logout', {
     method: 'POST',
     headers: {

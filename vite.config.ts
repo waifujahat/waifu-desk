@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-
   plugins: [react(), tailwindcss()],
 
   clearScreen: false,
@@ -26,10 +25,7 @@ export default defineConfig({
   envPrefix: ['VITE_', 'TAURI_ENV_'],
 
   build: {
-    target:
-      process.env.TAURI_ENV_PLATFORM === 'windows'
-        ? 'chrome105'
-        : 'safari13',
+    target: process.env.TAURI_ENV_PLATFORM === 'windows' ? 'chrome105' : 'safari13',
   },
   test: {
     environment: 'node',

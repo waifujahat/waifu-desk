@@ -19,11 +19,7 @@
   justify-content: space-between;
   padding: clamp(32px, 5vw, 76px);
   background:
-    radial-gradient(
-      ellipse at 20% 80%,
-      rgba(139, 92, 246, 0.22),
-      transparent 55%
-    ),
+    radial-gradient(ellipse at 20% 80%, rgba(139, 92, 246, 0.22), transparent 55%),
     linear-gradient(145deg, #191526, #10121b);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
