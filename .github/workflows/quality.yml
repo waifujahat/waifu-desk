@@ -46,7 +46,11 @@ jobs:
         with:
           components: rustfmt, clippy
 
-      # Backend Axum
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Rust Axum
       - name: Check Axum formatting
         run: cargo fmt --manifest-path server/Cargo.toml --all -- --check
 
@@ -56,27 +60,23 @@ jobs:
       - name: Check Axum Clippy
         run: cargo clippy --manifest-path server/Cargo.toml --all-targets --locked -- -D warnings
 
-      # Siapkan executable sidecar untuk Tauri
-      - name: Build Rust API sidecar
-        run: cargo build --manifest-path server/Cargo.toml --locked
+      # Gunakan script yang sama dengan development lokal
+      - name: Prepare Rust API sidecar
+        run: node scripts/prepare-sidecar.mjs
 
-      - name: Prepare Tauri sidecar binary
+      - name: Verify sidecar binary
         shell: pwsh
         run: |
           $targetTriple = (rustc --print host-tuple).Trim()
-          $destination = "src-tauri/binaries/waifudesk-api-$targetTriple.exe"
+          $binary = "src-tauri/binaries/waifudesk-api-$targetTriple.exe"
 
-          New-Item -ItemType Directory -Force -Path "src-tauri/binaries" | Out-Null
-
-          Copy-Item "server/target/debug/server.exe" $destination -Force
-
-          if (-not (Test-Path $destination)) {
-            throw "Rust API sidecar binary not found"
+          if (-not (Test-Path $binary)) {
+            throw "Sidecar binary tidak ditemukan: $binary"
           }
 
-          Write-Host "Sidecar ready: $destination"
+          Write-Host "Sidecar ready: $binary"
 
-      # Desktop Tauri
+      # Rust Tauri
       - name: Check Tauri formatting
         run: cargo fmt --manifest-path src-tauri/Cargo.toml --all -- --check
 

@@ -79,6 +79,41 @@ Role dan permission sudah tersedia pada backend, tetapi belum seluruh operasi pe
 
 Autentikasi saat ini berbasis akun lokal WaifuDesk **Single Sign-On (SSO), OAuth GitHub dan manajemen role melalui dashboard belum tersedia**
 
+
+### Rust API Sidecar Otomatis
+
+WaifuDesk menggunakan script `scripts/prepare-sidecar.mjs`
+untuk menyiapkan executable Rust API secara otomatis
+
+Persiapan dilakukan otomatis melalui konfigurasi
+`beforeDevCommand` dan `beforeBuildCommand` Tauri
+
+Untuk menjalankan persiapan secara manual jika diperlukan :
+
+**Mode development :**
+
+```powershell
+node scripts/prepare-sidecar.mjs
+```
+
+**Mode release :**
+
+```powershell
+node scripts/prepare-sidecar.mjs --release
+```
+
+Perintah desktop utama tetap :
+
+```powershell
+npm.cmd run tauri dev
+```
+
+Untuk membuat installer Windows :
+
+```powershell
+npm.cmd run tauri build
+```
+
 ### Rust API dan SQLite
 
 Backend HTTP dibangun menggunakan Rust, Axum dan SQLx dengan SQLite sebagai penyimpanan lokal
@@ -550,8 +585,6 @@ Fitur utama desktop, Authentication API, Rust Sidecar dan installer Windows tela
 - Content Security Policy Tauri masih perlu dikonfigurasi
 - Pembatasan akses IPC berdasarkan jendela masih perlu diselesaikan
 - Backend saat ini menggunakan port loopback tetap `3001`
-- Proses build executable sidecar belum otomatis pada fresh clone
-- GitHub Actions belum mencakup seluruh pengujian backend Axum
 - GitHub Pages hanya menyediakan frontend statis dan tidak menjalankan Rust API
 - Format log Codex dapat berubah dan memerlukan penyesuaian parser
 - Estimasi biaya token belum tersedia
