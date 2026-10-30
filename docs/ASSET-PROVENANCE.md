@@ -25,6 +25,6 @@ Dokumen ini adalah inventaris dan pemeriksaan, bukan nasihat hukum atau bukti ke
 - **Judul:** Sakura Blade Elegance
 - **Sumber / kredit:** [MotionBGS](https://motionbgs.com/sakura-blade-elegance)
 - **File di proyek:** `src/assets/anime/wallpapers/sakura-blade-elegance.mp4`
-- **Status:** pemilik proyek telah menyampaikan bahwa izin diperoleh dengan kewajiban kredit; bukti asli tidak disertakan dalam repositori.
-- **Pembatasan lisensi:** wallpaper bukan bagian dari lisensi kode WaifuDesk; penggunaan ulang atau redistribusi secara terpisah memerlukan hak masing-masing.
-- **Checklist internal pengelola:** pastikan bukti izin mencakup repo source, GitHub Pages (bila digunakan), dan installer/release Windows (bila digunakan).
+- **Status:** pemilik proyek telah menyampaikan bahwa izin diperoleh dengan kewajiban kredit, bukti asli tidak disertakan dalam repositori
+- **Pembatasan lisensi:** wallpaper bukan bagian dari lisensi kode WaifuDesk, penggunaan ulang atau redistribusi secara terpisah memerlukan hak masing-masing
+- **Checklist internal pengelola:** pastikan bukti izin mencakup repo source, GitHub Pages (bila digunakan) dan installer/release Windows (bila digunakan)

@@ -1,0 +1,18 @@
+# Embedded WaifuDesk changelog template (read-only preview).
+# Include non-Conventional messages, e.g. the initial "WaifuDesk" commit.
+[changelog]
+header = "# Release Notes\n"
+body = """
+{% if version %}## {{ version }}{% else %}## Unreleased{% endif %}
+
+{% for commit in commits %}- {{ commit.message | upper_first }}
+{% endfor %}
+"""
+trim = true
+render_always = true
+
+[git]
+conventional_commits = false
+filter_unconventional = false
+filter_commits = false
+sort_commits = "newest"

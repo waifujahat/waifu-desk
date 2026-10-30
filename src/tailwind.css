@@ -1,0 +1,43 @@
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme) prefix(tw);
+@import 'tailwindcss/utilities.css' layer(utilities) prefix(tw);
+
+@theme inline {
+  --color-wd-background: var(--bg);
+  --color-wd-surface: var(--surface);
+  --color-wd-text: var(--text);
+  --color-wd-muted: var(--muted);
+  --color-wd-border: var(--border);
+  --color-wd-primary: var(--purple);
+
+  --font-wd: Inter, system-ui, sans-serif;
+
+  --radius-wd-sm: 8px;
+  --radius-wd-md: 12px;
+  --radius-wd-lg: 18px;
+  --radius-wd-xl: 24px;
+
+  --spacing-wd-section: 28px;
+  --spacing-wd-card: 20px;
+  --spacing-wd-control: 12px;
+}
+
+@utility wd-panel {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+@utility wd-focus-ring {
+  outline: 2px solid var(--purple);
+  outline-offset: 2px;
+}
+
+@utility wd-scrollbar-hidden {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

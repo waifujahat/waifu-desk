@@ -1,14 +1,14 @@
-import { Menu, Moon, PanelTopOpen, RefreshCw, Sun } from 'lucide-react'
-import type { Theme } from '../types'
-import { Button } from '../design-system/components/Button'
-import { desktopAvailable, toggleMini } from '../lib/desktop'
+import { Menu, Moon, PanelTopOpen, RefreshCw, Sun } from 'lucide-react';
+import type { Theme } from '../types';
+import { Button } from '../design-system/components/Button';
+import { desktopAvailable, toggleMini } from '../lib/desktop';
 
 interface TopbarProps {
-  theme: Theme
-  onTheme: () => void
-  onMenu: () => void
-  refresh: () => void
-  loading: boolean
+  theme: Theme;
+  onTheme: () => void;
+  onMenu: () => void;
+  refresh: () => void;
+  loading: boolean;
 }
 
 /** The page title lives in PageHeader; the toolbar only contains actions. */
@@ -56,5 +56,5 @@ export default function Topbar({ theme, onTheme, onMenu, refresh, loading }: Top
         </Button>
       </div>
     </header>
-  )
+  );
 }

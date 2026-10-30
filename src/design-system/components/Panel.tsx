@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 
 interface PanelProps {
-  title: string
-  description?: string
-  action?: ReactNode
-  children: ReactNode
-  className?: string
+  title: string;
+  description?: string;
+  action?: ReactNode;
+  children: ReactNode;
+  className?: string;
 }
 
 /** Content surface shared by dashboard, Codex, activity and settings. */
@@ -21,5 +21,5 @@ export function Panel({ title, description, action, children, className = '' }: 
       </div>
       {children}
     </section>
-  )
+  );
 }

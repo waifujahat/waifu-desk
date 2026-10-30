@@ -24,3 +24,5 @@ Thumbs.db
 !/src/assets/anime/wallpapers/sakura-blade-elegance.mp4
 
 /src-tauri/gen/schemas/
+
+src-tauri/binaries/waifudesk-api-*

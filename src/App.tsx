@@ -1,176 +1,98 @@
-import { MascotHost } from './features/appearance/components/MascotHost' // wd-hana-mascot-v1
-import { useMascot } from './features/appearance/hooks/useMascot'
-import { WallpaperLayer, useAppearance } from './features/appearance' // wd-anime-edition-stages-1-2
-import { readAnimePalette, type AnimePalette } from './design-system/animeTheme' // wd-anime-theme-installed
-import { useEffect, useState } from 'react'
-import { BrainCircuit, RefreshCw } from 'lucide-react'
-import type { Page, Theme } from './types'
-import { useGithub } from './features/github/index'
-import { useCodex } from './features/codex/index'
-import Sidebar from './components/Sidebar'
-import Topbar from './components/Topbar'
-import Overview from './pages/Overview'
-import AI from './pages/AI'
-import Repositories from './pages/Repositories'
-import Activity from './pages/Activity'
-import Settings from './pages/Settings'
-import { compact, dateTime } from './lib/format'
-import { desktopAvailable, toggleMini } from './lib/desktop'
-import { Ring } from './components/Charts'
+import { useEffect, useState } from 'react';
 
-const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings']
-const isPage = (value: string): value is Page => PAGES.includes(value as Page)
+import type { Page } from './types';
 
-function readPreference(key: string, fallback: string) {
-  try {
-    return localStorage.getItem(key) || fallback
-  } catch {
-    return fallback
-  }
+import MiniApp from './components/MiniApp';
+import Sidebar from './components/Sidebar';
+import Topbar from './components/Topbar';
+
+import { MascotHost } from './features/appearance/components/MascotHost';
+import { useMascot } from './features/appearance/hooks/useMascot';
+import { WallpaperLayer, useAppearance } from './features/appearance';
+
+import { useGithub } from './features/github/index';
+import { useCodex } from './features/codex/index';
+
+import Overview from './pages/Overview';
+import AI from './pages/AI';
+import Repositories from './pages/Repositories';
+import Activity from './pages/Activity';
+import Settings from './pages/Settings';
+
+import { desktopAvailable } from './lib/desktop';
+import { useAppPreferences } from './hooks/useAppPreferences';
+
+import LoginPage from './features/auth/LoginPage';
+import { logoutAccount } from './features/auth/api';
+import type { AuthProfile, AuthSession } from './features/auth/api';
+
+const PAGES: Page[] = ['overview', 'ai', 'repositories', 'activity', 'settings'];
+
+const isPage = (value: string): value is Page => PAGES.includes(value as Page);
+
+interface MainAppProps {
+  account: AuthProfile;
+  onLogout: () => void;
+  logoutBusy: boolean;
+  logoutError: string;
 }
 
-function MiniApp() {
-  const codex = useCodex()
-  const latest = codex.data?.limits.find((item) => item.label === '5-hour window')
-  const weekly = codex.data?.limits.find((item) => item.label === 'Weekly window')
+// ==========================================
+// MAIN DASHBOARD
+// ==========================================
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark'
-    document.documentElement.dataset.palette = readAnimePalette(readPreference('wd-palette', 'classic'))
-  }, [])
+function MainApp({ account, onLogout, logoutBusy, logoutError }: MainAppProps) {
+  const { mascot, updateMascot } = useMascot();
 
-  return (
-    <div className="mini-app">
-      <div className="mini-head">
-        <span className="mini-mark">
-          <BrainCircuit size={20} />
-        </span>
-        <div>
-          <b>Codex</b>
-          <small>WaifuDesk</small>
-        </div>
-        <button
-          className="icon-button"
-          type="button"
-          title="Perbarui"
-          aria-label="Perbarui"
-          onClick={() => void codex.refresh()}
-        >
-          <RefreshCw size={16} className={codex.loading ? 'spinner' : ''} />
-        </button>
-      </div>
+  const { wallpaper, updateWallpaper } = useAppearance();
 
-      <div className="mini-card">
-        <div className="mini-top">
-          <span>Batas 5 jam</span>
-          <span className={codex.data?.connected ? 'mini-connected' : 'mini-offline'}>
-            {codex.data?.connected ? 'Lokal' : 'Tidak tersedia'}
-          </span>
-        </div>
-
-        <Ring percent={latest?.usedPercent ?? null} label="tersisa" caption="laporan lokal" />
-
-        <div className="mini-label">
-          <span>Mingguan</span>
-          <b>{weekly ? `${Math.round(100 - weekly.usedPercent)}%` : '—'}</b>
-        </div>
-
-        <div className="mini-label">
-          <span>Token · 30 hari</span>
-          <b>{codex.data?.connected ? compact(codex.data.totalTokens) : '—'}</b>
-        </div>
-
-        <div className="mini-label">
-          <span>Diperbarui</span>
-          <b>{dateTime(codex.data?.lastSeenAt)}</b>
-        </div>
-      </div>
-
-      <p className="mini-foot">Laporan lokal · bukan real-time</p>
-
-      <button type="button" className="mini-bottom-button" onClick={() => void toggleMini()}>
-        Tutup widget
-      </button>
-    </div>
-  )
-}
-
-function MainApp() {
-  // Hana tetap aktif, hanya panel pengaturannya yang dihapus.
-  const { mascot, updateMascot } = useMascot()
-  const { wallpaper, updateWallpaper } = useAppearance()
-
-  const [username, setUsername] = useState(() => readPreference('dc-username', 'waifujahat'))
-
-  const [theme, setTheme] = useState<Theme>(() =>
-    readPreference('dc-theme', 'dark') === 'light' ? 'light' : 'dark',
-  )
-
-  const [palette, setPalette] = useState<AnimePalette>(() =>
-    readAnimePalette(readPreference('wd-palette', 'classic')),
-  )
+  const { username, setUsername, theme, setTheme, palette, setPalette } = useAppPreferences();
 
   const [page, setPage] = useState<Page>(() => {
-    const hash = location.hash.slice(1)
-    return isPage(hash) ? hash : 'overview'
-  })
+    const hash = location.hash.slice(1);
 
-  const [menuOpen, setMenuOpen] = useState(false)
+    return isPage(hash) ? hash : 'overview';
+  });
 
-  const github = useGithub(username)
-  const codex = useCodex()
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-
-    try {
-      localStorage.setItem('dc-theme', theme)
-    } catch {
-      /* optional */
-    }
-  }, [theme])
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('dc-username', username)
-    } catch {
-      /* optional */
-    }
-  }, [username])
+  const github = useGithub(username);
+  const codex = useCodex();
 
   useEffect(() => {
     const handleHash = () => {
-      const hash = location.hash.slice(1)
-      setPage(isPage(hash) ? hash : 'overview')
-    }
+      const hash = location.hash.slice(1);
 
-    window.addEventListener('hashchange', handleHash)
-    return () => window.removeEventListener('hashchange', handleHash)
-  }, [])
+      setPage(isPage(hash) ? hash : 'overview');
+    };
 
-  useEffect(() => {
-    document.documentElement.dataset.palette = palette
+    window.addEventListener('hashchange', handleHash);
 
-    try {
-      localStorage.setItem('wd-palette', palette)
-    } catch {
-      /* optional */
-    }
-  }, [palette])
+    return () => {
+      window.removeEventListener('hashchange', handleHash);
+    };
+  }, []);
 
   function navigate(next: Page) {
-    setPage(next)
+    setPage(next);
 
     if (location.hash !== `#${next}`) {
-      location.hash = next
+      location.hash = next;
     }
 
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({
+      top: 0,
+      behavior: 'auto',
+    });
   }
 
   function refreshAll() {
-    void github.refresh(true)
-    void codex.refresh()
+    void github.refresh(true);
+    void codex.refresh();
+  }
+
+  function toggleTheme() {
+    setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
   }
 
   return (
@@ -184,19 +106,38 @@ function MainApp() {
       />
 
       <div className="app-main">
-        {/* Hana tetap muncul di halaman Ringkasan */}
         {page === 'overview' && <MascotHost mascot={mascot} onChange={updateMascot} />}
 
-        {/* Live wallpaper tetap aktif pada semua tema */}
         <WallpaperLayer palette={palette} wallpaper={wallpaper} />
 
         <Topbar
           theme={theme}
-          onTheme={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+          onTheme={toggleTheme}
           onMenu={() => setMenuOpen(true)}
           refresh={refreshAll}
           loading={github.loading || codex.loading}
         />
+
+        <div className="wd-accountbar">
+          <span className="wd-accountbar-email">
+            {account.display_name} · {account.email}
+          </span>
+
+          <button
+            type="button"
+            className="wd-accountbar-logout"
+            onClick={onLogout}
+            disabled={logoutBusy}
+          >
+            {logoutBusy ? 'Keluar...' : 'Logout'}
+          </button>
+
+          {logoutError && (
+            <span className="wd-accountbar-error" role="alert">
+              {logoutError}
+            </span>
+          )}
+        </div>
 
         <main className="content-area">
           {page === 'overview' && (
@@ -252,18 +193,69 @@ function MainApp() {
               username={username}
               onUsername={setUsername}
               theme={theme}
-              onTheme={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+              onTheme={toggleTheme}
               onCodexRefresh={() => void codex.refresh()}
             />
           )}
         </main>
       </div>
     </div>
-  )
+  );
 }
 
-export default function App() {
-  const isWidget = new URLSearchParams(location.search).get('widget') === '1' && desktopAvailable()
+// ==========================================
+// AUTHENTICATION GATE
+// ==========================================
 
-  return isWidget ? <MiniApp /> : <MainApp />
+export default function App() {
+  // Token sengaja hanya disimpan di memori.
+  const [session, setSession] = useState<AuthSession | null>(null);
+
+  const [logoutBusy, setLogoutBusy] = useState(false);
+  const [logoutError, setLogoutError] = useState('');
+
+  const isWidget = new URLSearchParams(location.search).get('widget') === '1' && desktopAvailable();
+
+  async function handleLogout() {
+    if (!session || logoutBusy) return;
+
+    setLogoutBusy(true);
+    setLogoutError('');
+
+    try {
+      await logoutAccount(session.token);
+
+      setSession(null);
+    } catch (error) {
+      setLogoutError(error instanceof Error ? error.message : 'Logout gagal. Silakan coba lagi.');
+    } finally {
+      setLogoutBusy(false);
+    }
+  }
+
+  // Pertahankan widget desktop yang sudah ada.
+  if (isWidget) {
+    return <MiniApp />;
+  }
+
+  // Dashboard utama membutuhkan login.
+  if (!session) {
+    return (
+      <LoginPage
+        onAuthenticated={(nextSession) => {
+          setSession(nextSession);
+          setLogoutError('');
+        }}
+      />
+    );
+  }
+
+  return (
+    <MainApp
+      account={session.profile}
+      onLogout={() => void handleLogout()}
+      logoutBusy={logoutBusy}
+      logoutError={logoutError}
+    />
+  );
 }

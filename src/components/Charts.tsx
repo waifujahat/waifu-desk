@@ -1,5 +1,5 @@
-import type { CSSProperties } from 'react'
-import { compact, prettyDate } from '../lib/format'
+import type { CSSProperties } from 'react';
+import { compact, prettyDate } from '../lib/format';
 
 export function Chart({
   points,
@@ -7,23 +7,23 @@ export function Chart({
   color = 'purple',
   height = 174,
 }: {
-  points: { day: string; count: number }[]
-  label?: string
-  color?: 'purple' | 'teal'
-  height?: number
+  points: { day: string; count: number }[];
+  label?: string;
+  color?: 'purple' | 'teal';
+  height?: number;
 }) {
   const width = 700,
     top = 18,
     bottom = 18,
-    span = height - top - bottom
-  const max = Math.max(1, ...points.map((point) => point.count))
+    span = height - top - bottom;
+  const max = Math.max(1, ...points.map((point) => point.count));
   const scaleX = (index: number) =>
-    points.length < 2 ? width / 2 : 6 + (index * (width - 12)) / (points.length - 1)
-  const scaleY = (value: number) => top + span - (value / max) * span
-  const poly = points.map((point, index) => `${scaleX(index)},${scaleY(point.count)}`).join(' ')
+    points.length < 2 ? width / 2 : 6 + (index * (width - 12)) / (points.length - 1);
+  const scaleY = (value: number) => top + span - (value / max) * span;
+  const poly = points.map((point, index) => `${scaleX(index)},${scaleY(point.count)}`).join(' ');
   const fillPath = points.length
     ? `M ${scaleX(0)},${height - bottom} L ${poly.replaceAll(' ', ' L ')} L ${scaleX(points.length - 1)},${height - bottom} Z`
-    : ''
+    : '';
   return (
     <div
       className="line-chart"
@@ -34,8 +34,16 @@ export function Chart({
         <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">
           <defs>
             <linearGradient id={`chart-fill-${color}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor={color === 'purple' ? '#9186ff' : '#65decf'} stopOpacity=".32" />
-              <stop offset="100%" stopColor={color === 'purple' ? '#9186ff' : '#65decf'} stopOpacity="0" />
+              <stop
+                offset="0%"
+                stopColor={color === 'purple' ? '#9186ff' : '#65decf'}
+                stopOpacity=".32"
+              />
+              <stop
+                offset="100%"
+                stopColor={color === 'purple' ? '#9186ff' : '#65decf'}
+                stopOpacity="0"
+              />
             </linearGradient>
           </defs>
           {[0.25, 0.5, 0.75, 1].map((frac) => (
@@ -78,12 +86,16 @@ export function Chart({
         <span>{prettyDate(points.at(-1)?.day)}</span>
       </div>
     </div>
-  )
+  );
 }
 export function Bars({ points }: { points: { day: string; tokens: number }[] }) {
-  const max = Math.max(...points.map((item) => item.tokens), 1)
+  const max = Math.max(...points.map((item) => item.tokens), 1);
   return (
-    <div className="bars-chart" role="img" aria-label={`Pemakaian token harian, ${points.length} hari`}>
+    <div
+      className="bars-chart"
+      role="img"
+      aria-label={`Pemakaian token harian, ${points.length} hari`}
+    >
       {points.map((point) => (
         <div
           key={point.day}
@@ -100,7 +112,7 @@ export function Bars({ points }: { points: { day: string; tokens: number }[] }) 
         </div>
       ))}
     </div>
-  )
+  );
 }
 export function Ring({
   percent,
@@ -108,12 +120,12 @@ export function Ring({
   caption,
   tone = 'purple',
 }: {
-  percent: number | null
-  label: string
-  caption: string
-  tone?: 'purple' | 'teal'
+  percent: number | null;
+  label: string;
+  caption: string;
+  tone?: 'purple' | 'teal';
 }) {
-  const value = percent == null ? 0 : Math.min(100, Math.max(0, percent))
+  const value = percent == null ? 0 : Math.min(100, Math.max(0, percent));
   return (
     <div className={`gauge ${tone}`} style={{ '--fill': `${value}%` } as CSSProperties}>
       <div className="gauge-inner">
@@ -122,5 +134,5 @@ export function Ring({
         <small>{caption}</small>
       </div>
     </div>
-  )
+  );
 }

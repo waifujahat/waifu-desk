@@ -1,15 +1,18 @@
-import { Image, Eye, EyeOff } from 'lucide-react'
+import { Image, Eye, EyeOff } from 'lucide-react';
 
-import type { WallpaperPreferences } from '../domain/wallpapers'
+import type { WallpaperPreferences } from '../domain/wallpapers';
 
 interface WallpaperSettingsProps {
-  wallpaper: WallpaperPreferences
-  onChange: (patch: Partial<WallpaperPreferences>) => void
+  wallpaper: WallpaperPreferences;
+  onChange: (patch: Partial<WallpaperPreferences>) => void;
 }
 
 export function WallpaperSettings({ wallpaper, onChange }: WallpaperSettingsProps) {
   return (
-    <section className="panel settings-panel wd-wallpaper-settings" aria-labelledby="wd-wallpaper-heading">
+    <section
+      className="panel settings-panel wd-wallpaper-settings"
+      aria-labelledby="wd-wallpaper-heading"
+    >
       <div className="setting-title">
         <span className="settings-symbol">
           <Image size={20} aria-hidden="true" />
@@ -55,5 +58,5 @@ export function WallpaperSettings({ wallpaper, onChange }: WallpaperSettingsProp
         />
       </div>
     </section>
-  )
+  );
 }

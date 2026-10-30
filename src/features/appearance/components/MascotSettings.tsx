@@ -1,15 +1,15 @@
-import { Cat } from 'lucide-react'
-import idle from '../../../assets/anime/mascot/hana-idle.png'
-import happy from '../../../assets/anime/mascot/hana-happy.png'
-import working from '../../../assets/anime/mascot/hana-working.png'
-import thinking from '../../../assets/anime/mascot/hana-thinking.png'
-import sleepy from '../../../assets/anime/mascot/hana-sleepy.png'
-import surprised from '../../../assets/anime/mascot/hana-surprised.png'
-import { EXPRESSIONS, type MascotExpression, type MascotPreferences } from '../domain/mascot'
+import { Cat } from 'lucide-react';
+import idle from '../../../assets/anime/mascot/hana-idle.png';
+import happy from '../../../assets/anime/mascot/hana-happy.png';
+import working from '../../../assets/anime/mascot/hana-working.png';
+import thinking from '../../../assets/anime/mascot/hana-thinking.png';
+import sleepy from '../../../assets/anime/mascot/hana-sleepy.png';
+import surprised from '../../../assets/anime/mascot/hana-surprised.png';
+import { EXPRESSIONS, type MascotExpression, type MascotPreferences } from '../domain/mascot';
 
 interface MascotSettingsProps {
-  mascot: MascotPreferences
-  onChange: (patch: Partial<MascotPreferences>) => void
+  mascot: MascotPreferences;
+  onChange: (patch: Partial<MascotPreferences>) => void;
 }
 
 const images: Record<MascotExpression, string> = {
@@ -19,7 +19,7 @@ const images: Record<MascotExpression, string> = {
   thinking,
   sleepy,
   surprised,
-}
+};
 
 const titles: Record<MascotExpression, string> = {
   idle: 'Idle',
@@ -28,11 +28,14 @@ const titles: Record<MascotExpression, string> = {
   thinking: 'Thinking',
   sleepy: 'Sleepy',
   surprised: 'Surprised',
-}
+};
 
 export function MascotSettings({ mascot, onChange }: MascotSettingsProps) {
   return (
-    <section className="panel settings-panel wd-mascot-settings" aria-labelledby="wd-mascot-heading">
+    <section
+      className="panel settings-panel wd-mascot-settings"
+      aria-labelledby="wd-mascot-heading"
+    >
       <div className="setting-title">
         <span className="settings-symbol">
           <Cat size={20} aria-hidden="true" />
@@ -68,5 +71,5 @@ export function MascotSettings({ mascot, onChange }: MascotSettingsProps) {
         ))}
       </select>
     </section>
-  )
+  );
 }

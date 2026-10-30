@@ -1,0 +1,277 @@
+/* Local Git Inspector — isolated styles; respects WaifuDesk wallpaper and theme. */
+.wd-local-git {
+  margin: 0 0 24px;
+  padding: 20px;
+  border: 1px solid rgb(167 181 216 / 24%);
+  border-radius: 17px;
+  background: rgb(20 27 46 / 87%);
+  color: #f3f5ff;
+  backdrop-filter: blur(16px);
+}
+
+.wd-local-head,
+.wd-local-release-heading,
+.wd-local-preview-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.wd-local-head h2,
+.wd-local-release h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 6px;
+  font-size: 18px;
+}
+
+.wd-local-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: #c6b7ff;
+}
+
+.wd-local-head p,
+.wd-local-release p,
+.wd-local-muted {
+  color: #c1cbdf;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.wd-local-actions,
+.wd-local-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wd-local-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgb(184 162 255 / 45%);
+  border-radius: 9px;
+  padding: 9px 12px;
+  color: #fff;
+  background: rgb(116 85 204 / 75%);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.wd-local-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wd-local-button:not(:disabled):hover {
+  filter: brightness(1.15);
+}
+
+.wd-local-secondary {
+  background: rgb(73 86 115 / 35%);
+  border-color: rgb(166 183 222 / 28%);
+}
+
+.wd-local-notice,
+.wd-local-error {
+  margin-top: 15px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: rgb(103 116 154 / 18%);
+  border: 1px solid rgb(171 189 231 / 22%);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.wd-local-error {
+  color: #ffd2d7;
+  background: rgb(164 54 80 / 20%);
+  border-color: rgb(233 121 139 / 40%);
+}
+
+.wd-local-body {
+  margin-top: 16px;
+}
+
+.wd-local-summary {
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgb(164 180 216 / 18%);
+}
+
+.wd-local-repo-name {
+  font-weight: 750;
+  font-size: 16px;
+}
+
+.wd-local-path {
+  color: #b1bed4;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  margin-top: 4px;
+}
+
+.wd-local-pills {
+  margin-top: 10px;
+}
+
+.wd-local-pills span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  padding: 6px 9px;
+  border-radius: 9px;
+  background: rgb(154 167 210 / 14%);
+}
+
+.wd-local-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.wd-local-grid > div {
+  min-width: 0;
+}
+
+.wd-local-grid h3 {
+  font-size: 13px;
+  margin: 0 0 9px;
+}
+
+.wd-local-files,
+.wd-local-commits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 248px;
+  overflow: auto;
+}
+
+.wd-local-files li,
+.wd-local-commits li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid rgb(157 176 210 / 12%);
+  padding: 8px 0;
+  font-size: 11px;
+}
+
+.wd-local-files li code {
+  flex: 1;
+  min-width: 0;
+  word-break: break-all;
+}
+
+.wd-local-files li span,
+.wd-local-commits li code {
+  font-size: 10px;
+  color: #c7b4ff;
+  flex-shrink: 0;
+}
+
+.wd-local-commit-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wd-local-commits small {
+  color: #b1bed4;
+  font-size: 10px;
+  max-width: 85px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wd-local-release {
+  border-top: 1px solid rgb(164 180 216 / 18%);
+  padding-top: 16px;
+}
+
+.wd-local-release h3 {
+  font-size: 14px;
+}
+
+.wd-local-preview {
+  margin-top: 15px;
+  border-radius: 10px;
+  background: rgb(7 12 23 / 64%);
+  border: 1px solid rgb(171 189 231 / 18%);
+  padding: 12px;
+}
+
+.wd-local-preview-top {
+  align-items: center;
+  font-size: 12px;
+}
+
+.wd-local-preview pre {
+  max-height: 250px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #e7ebfb;
+}
+
+html[data-theme='light'] .wd-local-git {
+  background: rgb(248 249 255 / 90%);
+  color: #1f2a42;
+  border-color: rgb(86 93 142 / 22%);
+}
+
+html[data-theme='light'] .wd-local-head p,
+html[data-theme='light'] .wd-local-release p,
+html[data-theme='light'] .wd-local-muted,
+html[data-theme='light'] .wd-local-path,
+html[data-theme='light'] .wd-local-commits small {
+  color: #59627a;
+}
+
+html[data-theme='light'] .wd-local-button {
+  color: white;
+}
+
+html[data-theme='light'] .wd-local-secondary {
+  color: #2d3450;
+  background: rgb(218 224 247 / 78%);
+}
+
+html[data-theme='light'] .wd-local-preview {
+  background: #f1f3fb;
+}
+
+html[data-theme='light'] .wd-local-preview pre {
+  color: #1e293b;
+}
+
+html[data-theme='light'] .wd-local-error {
+  color: #a51f3a;
+}
+
+@media (max-width: 760px) {
+  .wd-local-git {
+    padding: 14px;
+  }
+
+  .wd-local-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

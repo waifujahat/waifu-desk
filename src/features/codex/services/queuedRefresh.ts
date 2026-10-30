@@ -4,25 +4,25 @@
  * The callback handles its own errors so the queue can drain reliably.
  */
 export function createQueuedRefresh(work: () => Promise<void>) {
-  let pending: Promise<void> | null = null
-  let rerun = false
+  let pending: Promise<void> | null = null;
+  let rerun = false;
 
   function run(): Promise<void> {
     if (pending) {
-      rerun = true
-      return pending
+      rerun = true;
+      return pending;
     }
     const task = (async () => {
       do {
-        rerun = false
-        await work()
-      } while (rerun)
-    })()
+        rerun = false;
+        await work();
+      } while (rerun);
+    })();
     pending = task.finally(() => {
-      pending = null
-    })
-    return pending
+      pending = null;
+    });
+    return pending;
   }
 
-  return { run }
+  return { run };
 }

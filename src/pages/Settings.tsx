@@ -1,10 +1,10 @@
-import { WallpaperSettings, type WallpaperPreferences } from '../features/appearance' // wd-anime-edition-stages-1-2
-import { SakuraIcon, TsukiIcon, WaifuMark } from '../design-system/icons/AnimeMarks' // wd-anime-theme-installed
-import type { AnimePalette } from '../design-system/animeTheme'
-import { Check, FolderOpen, Github, HardDrive, Monitor, Moon, RotateCcw, Sun } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import type { Theme } from '../types'
-import { PageHeader } from '../components/Display'
+import { WallpaperSettings, type WallpaperPreferences } from '../features/appearance'; // wd-anime-edition-stages-1-2
+import { SakuraIcon, TsukiIcon, WaifuMark } from '../design-system/icons/AnimeMarks'; // wd-anime-theme-installed
+import type { AnimePalette } from '../design-system/animeTheme';
+import { Check, FolderOpen, Github, HardDrive, Monitor, Moon, RotateCcw, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import type { Theme } from '../types';
+import { PageHeader } from '../components/Display';
 import {
   desktopAvailable,
   getCodexDirectory,
@@ -12,20 +12,20 @@ import {
   resetCodexDirectory,
   setCodexDirectory,
   toggleMini,
-} from '../lib/desktop'
-import type { CodexDirectory } from '../lib/desktop'
-import { Button } from '../design-system/components/Button'
+} from '../lib/desktop';
+import type { CodexDirectory } from '../lib/desktop';
+import { Button } from '../design-system/components/Button';
 
 interface SettingsProps {
-  wallpaper: WallpaperPreferences
-  onWallpaperChange: (patch: Partial<WallpaperPreferences>) => void
-  username: string
-  onUsername: (value: string) => void
-  theme: Theme
-  onTheme: () => void
-  palette: AnimePalette
-  onPalette: (palette: AnimePalette) => void
-  onCodexRefresh: () => void
+  wallpaper: WallpaperPreferences;
+  onWallpaperChange: (patch: Partial<WallpaperPreferences>) => void;
+  username: string;
+  onUsername: (value: string) => void;
+  theme: Theme;
+  onTheme: () => void;
+  palette: AnimePalette;
+  onPalette: (palette: AnimePalette) => void;
+  onCodexRefresh: () => void;
 }
 
 export default function Settings({
@@ -39,70 +39,72 @@ export default function Settings({
   onPalette,
   onCodexRefresh,
 }: SettingsProps) {
-  const [draft, setDraft] = useState(username)
-  const [notice, setNotice] = useState('')
-  const [directory, setDirectory] = useState<CodexDirectory | null>(null)
-  const [directoryBusy, setDirectoryBusy] = useState(false)
-  const [directoryMessage, setDirectoryMessage] = useState('')
-  const desktop = desktopAvailable()
+  const [draft, setDraft] = useState(username);
+  const [notice, setNotice] = useState('');
+  const [directory, setDirectory] = useState<CodexDirectory | null>(null);
+  const [directoryBusy, setDirectoryBusy] = useState(false);
+  const [directoryMessage, setDirectoryMessage] = useState('');
+  const desktop = desktopAvailable();
 
   useEffect(() => {
-    if (!desktop) return
-    let cancelled = false
+    if (!desktop) return;
+    let cancelled = false;
     getCodexDirectory()
       .then((value) => {
-        if (!cancelled) setDirectory(value)
+        if (!cancelled) setDirectory(value);
       })
       .catch((error) => {
-        if (!cancelled) setDirectoryMessage(String(error))
-      })
+        if (!cancelled) setDirectoryMessage(String(error));
+      });
     return () => {
-      cancelled = true
-    }
-  }, [desktop])
+      cancelled = true;
+    };
+  }, [desktop]);
 
   async function chooseDirectory() {
-    setDirectoryBusy(true)
-    setDirectoryMessage('')
+    setDirectoryBusy(true);
+    setDirectoryMessage('');
     try {
-      const path = await pickCodexFolder()
-      if (!path) return // Cancelled, keep the existing setting.
-      const result = await setCodexDirectory(path)
-      setDirectory(result)
-      setDirectoryMessage('Folder tersimpan.')
-      onCodexRefresh()
+      const path = await pickCodexFolder();
+      if (!path) return; // Cancelled, keep the existing setting.
+      const result = await setCodexDirectory(path);
+      setDirectory(result);
+      setDirectoryMessage('Folder tersimpan.');
+      onCodexRefresh();
     } catch (error) {
-      setDirectoryMessage(error instanceof Error ? error.message : String(error))
+      setDirectoryMessage(error instanceof Error ? error.message : String(error));
     } finally {
-      setDirectoryBusy(false)
+      setDirectoryBusy(false);
     }
   }
 
   async function restoreDirectory() {
-    setDirectoryBusy(true)
-    setDirectoryMessage('')
+    setDirectoryBusy(true);
+    setDirectoryMessage('');
     try {
-      const result = await resetCodexDirectory()
-      setDirectory(result)
-      setDirectoryMessage('Lokasi otomatis dipulihkan.')
-      onCodexRefresh()
+      const result = await resetCodexDirectory();
+      setDirectory(result);
+      setDirectoryMessage('Lokasi otomatis dipulihkan.');
+      onCodexRefresh();
     } catch (error) {
-      setDirectoryMessage(error instanceof Error ? error.message : String(error))
+      setDirectoryMessage(error instanceof Error ? error.message : String(error));
     } finally {
-      setDirectoryBusy(false)
+      setDirectoryBusy(false);
     }
   }
 
-  useEffect(() => setDraft(username), [username])
+  useEffect(() => setDraft(username), [username]);
 
   function save() {
-    const value = draft.trim()
+    const value = draft.trim();
+
     if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(value)) {
-      setNotice('Username tidak valid.')
-      return
+      setNotice('Username tidak valid.');
+      return;
     }
-    onUsername(value)
-    setNotice('Tersimpan')
+
+    onUsername(value);
+    setNotice('Tersimpan');
   }
 
   return (
@@ -126,11 +128,11 @@ export default function Settings({
               value={draft}
               maxLength={39}
               onChange={(event) => {
-                setDraft(event.target.value)
-                setNotice('')
+                setDraft(event.target.value);
+                setNotice('');
               }}
               onKeyDown={(event) => {
-                if (event.key === 'Enter') save()
+                if (event.key === 'Enter') save();
               }}
             />
             <Button variant="primary" className="settings-save" onClick={save}>
@@ -191,7 +193,7 @@ export default function Settings({
             >
               <WaifuMark />
               <strong>Classic</strong>
-              <small>Minimal, netral</small>
+              <small>Ungu</small>
             </button>
             <button
               type="button"
@@ -201,7 +203,7 @@ export default function Settings({
             >
               <SakuraIcon />
               <strong>Sakura</strong>
-              <small>Pink lembut</small>
+              <small>Pink</small>
             </button>
             <button
               type="button"
@@ -211,7 +213,7 @@ export default function Settings({
             >
               <TsukiIcon />
               <strong>Tsuki</strong>
-              <small>Biru malam</small>
+              <small>Biru</small>
             </button>
           </div>
         </section>
@@ -278,5 +280,5 @@ export default function Settings({
         </section>
       </div>
     </>
-  )
+  );
 }

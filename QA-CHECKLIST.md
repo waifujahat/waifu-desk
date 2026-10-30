@@ -5,7 +5,7 @@
 - [ ] `npm.cmd run tauri dev` membuka jendela WaifuDesk
 - [ ] Ringkasan menampilkan data / status kosong secara benar
 - [ ] Codex menampilkan data lokal dan status batas yang akurat
-- [ ] Repositori: cari, pilih bahasa, urutkan, reset filter
+- [ ] Repositori : cari, pilih bahasa, urutkan, reset filter
 - [ ] Aktivitas GitHub tampil dan link terbuka aman
 - [ ] Tema terang/gelap berubah di semua halaman
 - [ ] Mini widget bisa dibuka/ditutup

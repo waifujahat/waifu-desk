@@ -1,15 +1,19 @@
-import { X } from 'lucide-react'
-import idle from '../../../assets/anime/mascot/hana-idle.png'
-import happy from '../../../assets/anime/mascot/hana-happy.png'
-import working from '../../../assets/anime/mascot/hana-working.png'
-import thinking from '../../../assets/anime/mascot/hana-thinking.png'
-import sleepy from '../../../assets/anime/mascot/hana-sleepy.png'
-import surprised from '../../../assets/anime/mascot/hana-surprised.png'
-import { nextMascotExpression, type MascotExpression, type MascotPreferences } from '../domain/mascot'
+import { X } from 'lucide-react';
+import idle from '../../../assets/anime/mascot/hana-idle.png';
+import happy from '../../../assets/anime/mascot/hana-happy.png';
+import working from '../../../assets/anime/mascot/hana-working.png';
+import thinking from '../../../assets/anime/mascot/hana-thinking.png';
+import sleepy from '../../../assets/anime/mascot/hana-sleepy.png';
+import surprised from '../../../assets/anime/mascot/hana-surprised.png';
+import {
+  nextMascotExpression,
+  type MascotExpression,
+  type MascotPreferences,
+} from '../domain/mascot';
 
 interface MascotHostProps {
-  mascot: MascotPreferences
-  onChange: (patch: Partial<MascotPreferences>) => void
+  mascot: MascotPreferences;
+  onChange: (patch: Partial<MascotPreferences>) => void;
 }
 
 const images: Record<MascotExpression, string> = {
@@ -19,7 +23,7 @@ const images: Record<MascotExpression, string> = {
   thinking,
   sleepy,
   surprised,
-}
+};
 
 const labels: Record<MascotExpression, string> = {
   idle: 'Siap menemanimu',
@@ -28,11 +32,11 @@ const labels: Record<MascotExpression, string> = {
   thinking: 'Lagi mikir...',
   sleepy: 'Waktunya istirahat?',
   surprised: 'Wah, ada yang baru!',
-}
+};
 
 /** Appears on Overview only; no timers, third-party code, or pointer-event overlay. */
 export function MascotHost({ mascot, onChange }: MascotHostProps) {
-  if (!mascot.enabled) return null
+  if (!mascot.enabled) return null;
 
   return (
     <aside className="wd-mascot-host" aria-label="Hana, maskot WaifuDesk">
@@ -58,5 +62,5 @@ export function MascotHost({ mascot, onChange }: MascotHostProps) {
         {labels[mascot.expression]}
       </span>
     </aside>
-  )
+  );
 }

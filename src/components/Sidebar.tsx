@@ -1,6 +1,6 @@
-import { WaifuMark } from '../design-system/icons/AnimeMarks' // wd-anime-theme-installed
-import { Activity, BrainCircuit, FolderGit2, LayoutDashboard, Settings2, X } from 'lucide-react'
-import type { Page } from '../types'
+import { WaifuMark } from '../design-system/icons/AnimeMarks'; // wd-anime-theme-installed
+import { Activity, BrainCircuit, FolderGit2, LayoutDashboard, Settings2, X } from 'lucide-react';
+import type { Page } from '../types';
 
 const navigation = [
   { id: 'overview', label: 'Ringkasan', icon: LayoutDashboard },
@@ -8,7 +8,7 @@ const navigation = [
   { id: 'repositories', label: 'Repositori', icon: FolderGit2 },
   { id: 'activity', label: 'Aktivitas', icon: Activity },
   { id: 'settings', label: 'Pengaturan', icon: Settings2 },
-] as const
+] as const;
 
 export default function Sidebar({
   page,
@@ -17,20 +17,27 @@ export default function Sidebar({
   onClose,
   username,
 }: {
-  page: Page
-  onPage: (value: Page) => void
-  open: boolean
-  onClose: () => void
-  username: string
+  page: Page;
+  onPage: (value: Page) => void;
+  open: boolean;
+  onClose: () => void;
+  username: string;
 }) {
   const goTo = (target: Page) => {
-    onPage(target)
-    onClose()
-  }
+    onPage(target);
+    onClose();
+  };
 
   return (
     <>
-      {open && <button type="button" className="mobile-backdrop" aria-label="Tutup menu" onClick={onClose} />}
+      {open && (
+        <button
+          type="button"
+          className="mobile-backdrop"
+          aria-label="Tutup menu"
+          onClick={onClose}
+        />
+      )}
       <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
         <div className="brand-row">
           <span className="logo-icon" aria-hidden="true">
@@ -78,5 +85,5 @@ export default function Sidebar({
         </button>
       </aside>
     </>
-  )
+  );
 }
